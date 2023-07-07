@@ -1,4 +1,4 @@
-import { Column, Entity, OneToOne } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
 import { User } from '@pluto/users/entities/user';
 import { AbstractBaseEntity } from '@pluto/database/abstract-base.entity';
 
@@ -17,5 +17,6 @@ export class Profile extends AbstractBaseEntity<Profile>{
   profilePhoto?: string;
 
   @OneToOne(() => User, (user) => user.profile, { onDelete: 'CASCADE' })
+  @JoinColumn()
   user: User;
 }
