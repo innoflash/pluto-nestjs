@@ -13,5 +13,5 @@ export default new DataSource({
   username: configService.getOrThrow('POSTGRES_USER'),
   port: configService.getOrThrow('POSTGRES_PORT'),
   host: configService.getOrThrow('POSTGRES_HOST'),
-  migrations: ['database/migrations/**'],
+  migrations: ['src/database/migrations/**'],
 });
