@@ -20,39 +20,6 @@ module.exports = {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-explicit-any': 'off',
-    "prefer-arrow-callback": "error",
-    "curly": "error",
-    "eol-last": "error",
-    "no-duplicate-imports": "error",
-    "no-console": "warn",
-    "indent": [
-      "error",
-      2
-    ],
-    "max-len": [
-      "error",
-      140
-    ],
-    "eqeqeq": [
-      "error",
-      "always",
-      {
-        "null": "ignore"
-      }
-    ],
-    "prefer-const": "error",
-    "newline-before-return": "error",
-    "no-const-assign": "error",
-    "no-empty": "error",
-    "no-invalid-regexp": "error",
-    "semi": "off",
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "@typescript-eslint/semi": [
-      "error"
-    ]
+    '@typescript-eslint/no-explicit-any': 'off'
   },
 };
