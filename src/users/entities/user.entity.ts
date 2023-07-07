@@ -1,6 +1,7 @@
 import { AbstractBaseEntity } from '@pluto/database/abstract-base.entity';
-import { Column, CreateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity } from 'typeorm';
 
+@Entity('users')
 export class UserEntity extends AbstractBaseEntity<UserEntity> {
   @Column({ unique: true })
   email: string;
@@ -14,6 +15,6 @@ export class UserEntity extends AbstractBaseEntity<UserEntity> {
   @Column()
   lastName: string;
 
-  @CreateDateColumn({ type: 'datetime' })
+  @CreateDateColumn()
   createdAt: Date;
 }
