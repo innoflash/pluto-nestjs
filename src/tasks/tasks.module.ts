@@ -1,4 +1,11 @@
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Task } from '@pluto/tasks/entities/task';
 
-@Module({})
-export class TasksModule {}
+@Module({
+  imports: [
+    TypeOrmModule.forFeature([Task])
+  ]
+})
+export class TasksModule {
+}
