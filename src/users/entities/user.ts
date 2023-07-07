@@ -1,6 +1,7 @@
 import { AbstractBaseEntity } from '@pluto/database/abstract-base.entity';
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToOne } from 'typeorm';
 import { Role } from '@pluto/users/entities/role';
+import { Profile } from '@pluto/users/entities/profile';
 
 @Entity('users')
 export class User extends AbstractBaseEntity<User> {
@@ -25,4 +26,8 @@ export class User extends AbstractBaseEntity<User> {
     inverseJoinColumn: { name: 'roleId' }
   })
   roles: Role[];
+
+  @OneToOne(() => User, (user) => user.profile)
+  @JoinColumn()
+  profile: Profile;
 }
