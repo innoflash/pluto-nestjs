@@ -4,6 +4,7 @@ import { Role } from '@pluto/users/entities/role';
 import { Profile } from '@pluto/users/entities/profile';
 import { Testimony } from '@pluto/testimonies/entities/testimony';
 import { Project } from '@pluto/projects/entities/project';
+import { Rating } from '@pluto/users/entities/rating';
 
 @Entity('users')
 export class User extends AbstractBaseEntity<User> {
@@ -31,6 +32,9 @@ export class User extends AbstractBaseEntity<User> {
 
   @OneToOne(() => User, (user) => user.profile)
   profile: Profile;
+
+  @OneToOne(() => Rating, (rating) => rating.user)
+  rating: Rating;
 
   @OneToMany(() => Testimony, (testimony) => testimony.user)
   testimonies: Testimony[];
