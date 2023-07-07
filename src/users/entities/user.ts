@@ -1,7 +1,9 @@
 import { AbstractBaseEntity } from '@pluto/database/abstract-base.entity';
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToOne } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, OneToOne } from 'typeorm';
 import { Role } from '@pluto/users/entities/role';
 import { Profile } from '@pluto/users/entities/profile';
+import { Testimony } from '@pluto/testimonies/entities/testimony';
+import { Project } from '@pluto/projects/entities/project';
 
 @Entity('users')
 export class User extends AbstractBaseEntity<User> {
@@ -29,4 +31,10 @@ export class User extends AbstractBaseEntity<User> {
 
   @OneToOne(() => User, (user) => user.profile)
   profile: Profile;
+
+  @OneToMany(() => Testimony, (testimony) => testimony.user)
+  testimonies: Testimony[];
+
+  @ManyToMany(() => Project, project => project.members)
+  projects: Project[];
 }

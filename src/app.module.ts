@@ -9,6 +9,7 @@ import { TasksModule } from '@pluto/tasks/tasks.module';
 import { MessagesModule } from '@pluto/messages/messages.module';
 import { SocialMediaModule } from '@pluto/social-media/social-media.module';
 import { RatingsModule } from '@pluto/ratings/ratings.module';
+import { TestimoniesModule } from './testimonies/testimonies.module';
 
 @Module({
   imports: [
@@ -23,7 +24,8 @@ import { RatingsModule } from '@pluto/ratings/ratings.module';
     TasksModule,
     MessagesModule,
     SocialMediaModule,
-    RatingsModule
+    RatingsModule,
+    TestimoniesModule
   ],
   controllers: [],
   providers: []
