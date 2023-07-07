@@ -13,9 +13,16 @@
     "incremental": true,
     "skipLibCheck": true,
     "strictNullChecks": false,
-    "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "allowJs": true,
+    "paths": {
+      "@pluto/*": [
+        "src/*"
+      ]
+    }
   }
 }
