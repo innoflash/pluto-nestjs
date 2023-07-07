@@ -8,6 +8,7 @@ import { Rating } from '@pluto/users/entities/rating';
 import { Photo } from '@pluto/photos/entities/photo';
 import { Task } from '@pluto/tasks/entities/task';
 import { Message } from '@pluto/messages/entities/message';
+import { BoardMessage } from '@pluto/messages/entities/board-message';
 
 @Entity('users')
 export class User extends AbstractBaseEntity<User> {
@@ -49,6 +50,9 @@ export class User extends AbstractBaseEntity<User> {
 
   @OneToMany(() => Message, (message) => message.recipient)
   incomingMessages: Message[];
+
+  @OneToMany(() => BoardMessage, (message) => message.user)
+  boardMessages: Message[];
 
   @ManyToMany(() => Project, (project) => project.members)
   projects: Project[];
