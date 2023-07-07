@@ -1,11 +1,13 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UserEntity } from '@pluto/users/entities/user.entity';
+import { User } from '@pluto/users/entities/user';
+import { Role } from '@pluto/users/entities/role';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      UserEntity
+      User,
+      Role
     ])
   ]
 })
