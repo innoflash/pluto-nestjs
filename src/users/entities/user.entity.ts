@@ -25,7 +25,7 @@ export class User extends AbstractBaseEntity<User> {
   @Column()
   lastName: string;
 
-  @CreateDateColumn()
+  @CreateDateColumn({})
   createdAt: Date;
 
   @ManyToMany(() => Role, (role) => role.users)

@@ -11,6 +11,6 @@ export default class UserSeeder implements Seeder {
 
     const userFactory = factoryManager.get(User);
 
-    return userFactory.saveMany(10);
+    return userFactory.saveMany(100);
   }
 }
