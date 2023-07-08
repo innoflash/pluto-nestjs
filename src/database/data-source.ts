@@ -4,6 +4,7 @@ import { ConfigService } from '@nestjs/config';
 import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import { SeederOptions } from 'typeorm-extension';
 import UserSeeder from './seeds/user.seeder';
+import RoleSeeder from './seeds/role.seeder';
 
 config();
 
@@ -20,6 +21,7 @@ export const dataSourceOptions: PostgresConnectionOptions & SeederOptions = {
   migrations: ['dist/database/migrations/**/*.js'],
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
   seeds: [
+    RoleSeeder,
     UserSeeder
   ],
   factories: ['src/database/factories/**/*{.ts,.js}'],
