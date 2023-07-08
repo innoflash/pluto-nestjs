@@ -1,7 +1,7 @@
 import { Column, CreateDateColumn, Entity, ManyToOne } from 'typeorm';
 import { AbstractBaseEntity } from '@pluto/database/abstract-base.entity';
 import { BoardType } from '@pluto/messages/board-type';
-import { User } from '@pluto/users/entities/user';
+import { User } from '@pluto/users/entities/user.entity';
 
 @Entity('board_messages')
 export class BoardMessage extends AbstractBaseEntity<BoardMessage> {

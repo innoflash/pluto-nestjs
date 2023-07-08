@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
-import { User } from '@pluto/users/entities/user';
+import { User } from '@pluto/users/entities/user.entity';
 import { AbstractBaseEntity } from '@pluto/database/abstract-base.entity';
 
 @Entity('profiles')

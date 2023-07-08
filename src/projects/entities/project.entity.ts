@@ -1,7 +1,7 @@
 import { AbstractBaseEntity } from '@pluto/database/abstract-base.entity';
 import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany } from 'typeorm';
 import { ProjectStatus } from '@pluto/projects/project-status';
-import { User } from '@pluto/users/entities/user';
+import { User } from '@pluto/users/entities/user.entity';
 
 @Entity('projects')
 export class Project extends AbstractBaseEntity<Project> {

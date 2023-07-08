@@ -1,14 +1,14 @@
 import { AbstractBaseEntity } from '@pluto/database/abstract-base.entity';
 import { Column, CreateDateColumn, Entity, ManyToMany, OneToMany, OneToOne } from 'typeorm';
-import { Role } from '@pluto/users/entities/role';
-import { Profile } from '@pluto/users/entities/profile';
-import { Testimony } from '@pluto/testimonies/entities/testimony';
-import { Project } from '@pluto/projects/entities/project';
-import { Rating } from '@pluto/users/entities/rating';
-import { Photo } from '@pluto/photos/entities/photo';
-import { Task } from '@pluto/tasks/entities/task';
-import { Message } from '@pluto/messages/entities/message';
-import { BoardMessage } from '@pluto/messages/entities/board-message';
+import { Role } from '@pluto/users/entities/role.entity';
+import { Profile } from '@pluto/users/entities/profile.entity';
+import { Testimony } from '@pluto/testimonies/entities/testimony.entity';
+import { Project } from '@pluto/projects/entities/project.entity';
+import { Rating } from '@pluto/users/entities/rating.entity';
+import { Photo } from '@pluto/photos/entities/photo.entity';
+import { Task } from '@pluto/tasks/entities/task.entity';
+import { Message } from '@pluto/messages/entities/message.entity';
+import { BoardMessage } from '@pluto/messages/entities/board-message.entity';
 
 @Entity('users')
 export class User extends AbstractBaseEntity<User> {

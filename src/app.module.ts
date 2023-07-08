@@ -8,7 +8,6 @@ import { PhotosModule } from '@pluto/photos/photos.module';
 import { TasksModule } from '@pluto/tasks/tasks.module';
 import { MessagesModule } from '@pluto/messages/messages.module';
 import { SocialMediaModule } from '@pluto/social-media/social-media.module';
-import { RatingsModule } from '@pluto/ratings/ratings.module';
 import { TestimoniesModule } from './testimonies/testimonies.module';
 import { UsersSubscriber } from '@pluto/users/users-subscriber';
 
@@ -25,7 +24,6 @@ import { UsersSubscriber } from '@pluto/users/users-subscriber';
     TasksModule,
     MessagesModule,
     SocialMediaModule,
-    RatingsModule,
     TestimoniesModule
   ],
   controllers: [],

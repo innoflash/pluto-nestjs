@@ -1,6 +1,6 @@
 import { AbstractBaseEntity } from '@pluto/database/abstract-base.entity';
 import { Column, CreateDateColumn, Entity, ManyToOne } from 'typeorm';
-import { User } from '@pluto/users/entities/user';
+import { User } from '@pluto/users/entities/user.entity';
 
 @Entity('messages')
 export class Message extends AbstractBaseEntity<Message> {

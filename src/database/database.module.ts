@@ -15,7 +15,7 @@ import { ConfigService } from '@nestjs/config';
         host: configService.getOrThrow('POSTGRES_HOST'),
         autoLoadEntities: true,
         logging: true,
-        synchronize: true
+        synchronize: false
       })
     })
   ]

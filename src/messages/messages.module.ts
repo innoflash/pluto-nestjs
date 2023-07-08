@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Message } from '@pluto/messages/entities/message';
-import { BoardMessage } from '@pluto/messages/entities/board-message';
+import { Message } from '@pluto/messages/entities/message.entity';
+import { BoardMessage } from '@pluto/messages/entities/board-message.entity';
 
 @Module({
   imports: [
