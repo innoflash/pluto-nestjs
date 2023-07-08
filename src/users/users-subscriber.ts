@@ -1,6 +1,6 @@
 import { EntitySubscriberInterface, EventSubscriber, InsertEvent } from 'typeorm';
-import { User } from '@pluto/users/entities/user.entity';
 import * as bcrypt from 'bcrypt';
+import { User } from './entities/user.entity';
 
 @EventSubscriber()
 export class UsersSubscriber implements EntitySubscriberInterface<User> {

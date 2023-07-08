@@ -1,6 +1,6 @@
-import { AbstractBaseEntity } from '@pluto/database/abstract-base.entity';
-import { MediaPlatform } from '@pluto/social-media/media-platform';
 import { Column, Entity } from 'typeorm';
+import { AbstractBaseEntity } from '../database/abstract-base.entity';
+import { MediaPlatform } from './media-platform';
 
 @Entity()
 export class SocialMedia extends AbstractBaseEntity<SocialMedia> {

@@ -1,6 +1,6 @@
-import { AbstractBaseEntity } from '@pluto/database/abstract-base.entity';
 import { Column, CreateDateColumn, Entity, ManyToOne } from 'typeorm';
-import { User } from '@pluto/users/entities/user.entity';
+import { AbstractBaseEntity } from '../../database/abstract-base.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity('tasks')
 export class Task extends AbstractBaseEntity<Task> {

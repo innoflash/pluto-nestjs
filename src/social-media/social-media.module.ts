@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { SocialMedia } from '@pluto/social-media/social-media.entity';
+import { SocialMedia } from './social-media.entity';
 
 @Module({
   imports: [

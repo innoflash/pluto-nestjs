@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common';
 import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
-import { UsersModule } from '@pluto/users/users.module';
-import { ProjectsModule } from '@pluto/projects/projects.module';
-import { AuthenticationModule } from '@pluto/authentication/authentication.module';
-import { PhotosModule } from '@pluto/photos/photos.module';
-import { TasksModule } from '@pluto/tasks/tasks.module';
-import { MessagesModule } from '@pluto/messages/messages.module';
-import { SocialMediaModule } from '@pluto/social-media/social-media.module';
+import { UsersModule } from './users/users.module';
+import { AuthenticationModule } from './authentication/authentication.module';
+import { PhotosModule } from './photos/photos.module';
+import { ProjectsModule } from './projects/projects.module';
+import { TasksModule } from './tasks/tasks.module';
+import { MessagesModule } from './messages/messages.module';
+import { SocialMediaModule } from './social-media/social-media.module';
 import { TestimoniesModule } from './testimonies/testimonies.module';
-import { UsersSubscriber } from '@pluto/users/users-subscriber';
-
+import { UsersSubscriber } from './users/users-subscriber';
 @Module({
   imports: [
     ConfigModule.forRoot({

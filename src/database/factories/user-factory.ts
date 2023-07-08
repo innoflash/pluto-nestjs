@@ -1,5 +1,5 @@
 import { setSeederFactory } from 'typeorm-extension';
-import { User } from '@pluto/users/entities/user.entity';
+import { User } from '../../users/entities/user.entity';
 
 export default setSeederFactory(User, (faker) => {
   return new User({

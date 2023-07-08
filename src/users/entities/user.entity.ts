@@ -1,17 +1,18 @@
-import { AbstractBaseEntity } from '@pluto/database/abstract-base.entity';
 import { Column, CreateDateColumn, Entity, ManyToMany, OneToMany, OneToOne } from 'typeorm';
-import { Role } from '@pluto/users/entities/role.entity';
-import { Profile } from '@pluto/users/entities/profile.entity';
-import { Testimony } from '@pluto/testimonies/entities/testimony.entity';
-import { Project } from '@pluto/projects/entities/project.entity';
-import { Rating } from '@pluto/users/entities/rating.entity';
-import { Photo } from '@pluto/photos/entities/photo.entity';
-import { Task } from '@pluto/tasks/entities/task.entity';
-import { Message } from '@pluto/messages/entities/message.entity';
-import { BoardMessage } from '@pluto/messages/entities/board-message.entity';
+import { AbstractBaseEntity } from '../../database/abstract-base.entity';
+import { Role } from './role.entity';
+import { Profile } from './profile.entity';
+import { Rating } from './rating.entity';
+import { Testimony } from '../../testimonies/entities/testimony.entity';
+import { Photo } from '../../photos/entities/photo.entity';
+import { Task } from '../../tasks/entities/task.entity';
+import { Message } from '../../messages/entities/message.entity';
+import { BoardMessage } from '../../messages/entities/board-message.entity';
+import { Project } from '../../projects/entities/project.entity';
 
 @Entity('users')
 export class User extends AbstractBaseEntity<User> {
+
   @Column({ unique: true })
   email: string;
 

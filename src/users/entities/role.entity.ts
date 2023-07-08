@@ -1,7 +1,7 @@
-import { AbstractBaseEntity } from '@pluto/database/abstract-base.entity';
-import { UserRole } from '@pluto/users/user-role';
 import { Column, Entity, JoinTable, ManyToMany } from 'typeorm';
-import { User } from '@pluto/users/entities/user.entity';
+import { AbstractBaseEntity } from '../../database/abstract-base.entity';
+import { UserRole } from '../user-role';
+import { User } from './user.entity';
 
 @Entity('roles')
 export class Role extends AbstractBaseEntity<Role> {

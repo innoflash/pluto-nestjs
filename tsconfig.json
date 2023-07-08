@@ -18,11 +18,6 @@
     "noFallthroughCasesInSwitch": false,
     "noImplicitAny": true,
     "noUnusedLocals": true,
-    "allowJs": true,
-    "paths": {
-      "@pluto/*": [
-        "src/*"
-      ]
-    }
+    "allowJs": true
   }
 }

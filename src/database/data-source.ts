@@ -16,7 +16,7 @@ export const dataSourceOptions: PostgresConnectionOptions & SeederOptions = {
   port: configService.getOrThrow('POSTGRES_PORT'),
   host: configService.getOrThrow('POSTGRES_HOST'),
   migrations: ['dist/database/migrations/**/*.js'],
-  entities: ['dist/**/*.entity.js'],
+  entities: [__dirname + '/../**/*.entity.{js,ts}'],
   seeds: ['src/database/seeds/**/*{.ts,.js}'],
   factories: ['src/database/factories/**/*{.ts,.js}'],
 };

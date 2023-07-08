@@ -1,6 +1,6 @@
 import { Column, Entity, JoinColumn, OneToOne } from 'typeorm';
-import { User } from '@pluto/users/entities/user.entity';
-import { AbstractBaseEntity } from '@pluto/database/abstract-base.entity';
+import { AbstractBaseEntity } from '../../database/abstract-base.entity';
+import { User } from './user.entity';
 
 @Entity('profiles')
 export class Profile extends AbstractBaseEntity<Profile>{
