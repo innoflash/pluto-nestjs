@@ -7,6 +7,7 @@ import UserSeeder from './seeds/user.seeder';
 import RoleSeeder from './seeds/role.seeder';
 import ProfileSeeder from './seeds/profile.seeder';
 import UserRoleSeeder from './seeds/user_role.seeder';
+import PhotoSeeder from './seeds/photo.seeder';
 
 config();
 
@@ -22,7 +23,7 @@ export const dataSourceOptions: PostgresConnectionOptions & SeederOptions = {
   logging: true,
   migrations: ['dist/database/migrations/**/*.js'],
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
-  seeds: [RoleSeeder, UserSeeder, ProfileSeeder, UserRoleSeeder],
+  seeds: [RoleSeeder, UserSeeder, ProfileSeeder, UserRoleSeeder, PhotoSeeder],
   factories: ['src/database/factories/**/*{.ts,.js}']
 };
 

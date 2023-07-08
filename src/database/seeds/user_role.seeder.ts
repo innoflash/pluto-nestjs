@@ -8,9 +8,7 @@ export default class UserRoleSeeder implements Seeder {
   public async run(dataSource: DataSource): Promise<any> {
     const teachersPromise = await dataSource
       .getRepository(User)
-      .find({
-        take: 10
-      })
+      .find({ take: 10 })
       .then(teachers =>
         teachers.map(async teacher => {
           const teacherRole = await dataSource.getRepository(Role).findOne({
@@ -24,9 +22,7 @@ export default class UserRoleSeeder implements Seeder {
 
     const studentsPromise = await dataSource
       .getRepository(User)
-      .find({
-        skip: 10
-      })
+      .find({ skip: 10 })
       .then(students =>
         students.map(async student => {
           const userRole = await dataSource.getRepository(Role).findOne({
