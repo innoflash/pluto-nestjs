@@ -5,6 +5,7 @@ import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConne
 import { SeederOptions } from 'typeorm-extension';
 import UserSeeder from './seeds/user.seeder';
 import RoleSeeder from './seeds/role.seeder';
+import ProfileSeeder from './seeds/profile.seeder';
 
 config();
 
@@ -20,11 +21,8 @@ export const dataSourceOptions: PostgresConnectionOptions & SeederOptions = {
   logging: true,
   migrations: ['dist/database/migrations/**/*.js'],
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
-  seeds: [
-    RoleSeeder,
-    UserSeeder
-  ],
-  factories: ['src/database/factories/**/*{.ts,.js}'],
+  seeds: [RoleSeeder, UserSeeder, ProfileSeeder],
+  factories: ['src/database/factories/**/*{.ts,.js}']
 };
 
 export default new DataSource(dataSourceOptions);

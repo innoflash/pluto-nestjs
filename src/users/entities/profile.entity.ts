@@ -3,8 +3,8 @@ import { AbstractBaseEntity } from '../../database/abstract-base.entity';
 import { User } from './user.entity';
 
 @Entity('profiles')
-export class Profile extends AbstractBaseEntity<Profile>{
-  @Column({ length: 15 })
+export class Profile extends AbstractBaseEntity<Profile> {
+  @Column()
   phone: string;
 
   @Column({ nullable: true })
@@ -16,7 +16,7 @@ export class Profile extends AbstractBaseEntity<Profile>{
   @Column({ nullable: true })
   profilePhoto?: string;
 
-  @OneToOne(() => User, (user) => user.profile, { onDelete: 'CASCADE' })
+  @OneToOne(() => User, user => user.profile, { onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
 }

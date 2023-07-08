@@ -15,10 +15,9 @@ import { ConfigService } from '@nestjs/config';
         host: configService.getOrThrow('POSTGRES_HOST'),
         autoLoadEntities: true,
         logging: true,
-        synchronize: false
+        synchronize: true
       })
     })
   ]
 })
-export class DatabaseModule {
-}
+export class DatabaseModule {}
