@@ -6,6 +6,7 @@ import { SeederOptions } from 'typeorm-extension';
 import UserSeeder from './seeds/user.seeder';
 import RoleSeeder from './seeds/role.seeder';
 import ProfileSeeder from './seeds/profile.seeder';
+import UserRoleSeeder from './seeds/user_role.seeder';
 
 config();
 
@@ -21,7 +22,7 @@ export const dataSourceOptions: PostgresConnectionOptions & SeederOptions = {
   logging: true,
   migrations: ['dist/database/migrations/**/*.js'],
   entities: [__dirname + '/../**/*.entity.{js,ts}'],
-  seeds: [RoleSeeder, UserSeeder, ProfileSeeder],
+  seeds: [RoleSeeder, UserSeeder, ProfileSeeder, UserRoleSeeder],
   factories: ['src/database/factories/**/*{.ts,.js}']
 };
 
