@@ -10,6 +10,7 @@ import { MessagesModule } from '@pluto/messages/messages.module';
 import { SocialMediaModule } from '@pluto/social-media/social-media.module';
 import { RatingsModule } from '@pluto/ratings/ratings.module';
 import { TestimoniesModule } from './testimonies/testimonies.module';
+import { UsersSubscriber } from '@pluto/users/users-subscriber';
 
 @Module({
   imports: [
@@ -28,7 +29,9 @@ import { TestimoniesModule } from './testimonies/testimonies.module';
     TestimoniesModule
   ],
   controllers: [],
-  providers: []
+  providers: [
+    UsersSubscriber
+  ]
 })
 export class AppModule {
 }
