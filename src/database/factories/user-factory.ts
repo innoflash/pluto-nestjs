@@ -6,7 +6,7 @@ export default setSeederFactory(User, async (faker) => {
   const salt = bcrypt.genSaltSync();
 
   return new User({
-    email: faker.internet.email(),
+    email: faker.internet.email({ allowSpecialCharacters: false }),
     firstName: faker.person.firstName(),
     lastName: faker.person.lastName(),
     password: await bcrypt.hash('secret', salt)
