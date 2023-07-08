@@ -1,13 +1,15 @@
 import { EntitySubscriberInterface, EventSubscriber, InsertEvent } from 'typeorm';
 import { User } from '@pluto/users/entities/user';
+import * as bcrypt from 'bcrypt';
 
 @EventSubscriber()
-export class UsersSubscriber implements  EntitySubscriberInterface<User>{
+export class UsersSubscriber implements EntitySubscriberInterface<User> {
   public listenTo(): Function | string {
     return User;
   }
 
-  public beforeInsert(event: InsertEvent<User>): Promise<any> | void {
-    event.entity.password =
+  public async beforeInsert(event: InsertEvent<User>) {
+    const salt = bcrypt.genSaltSync();
+    event.entity.password = await bcrypt.hash(event.entity.password, salt);
   }
 }
