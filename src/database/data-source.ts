@@ -10,6 +10,7 @@ import UserRoleSeeder from './seeds/user_role.seeder';
 import PhotoSeeder from './seeds/photo.seeder';
 import TestimonySeeder from './seeds/testimony.seeder';
 import TaskSeeder from './seeds/task.seeder';
+import ProjectUsersSeeder from './seeds/project-users.seeder';
 
 config();
 
@@ -32,7 +33,8 @@ export const dataSourceOptions: PostgresConnectionOptions & SeederOptions = {
     UserRoleSeeder,
     PhotoSeeder,
     TestimonySeeder,
-    TaskSeeder
+    TaskSeeder,
+    ProjectUsersSeeder
   ],
   factories: ['src/database/factories/**/*{.ts,.js}']
 };

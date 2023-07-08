@@ -1,4 +1,10 @@
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinTable,
+  ManyToMany
+} from 'typeorm';
 import { ProjectStatus } from '../project-status';
 import { AbstractBaseEntity } from '../../database/abstract-base.entity';
 import { User } from '../../users/entities/user.entity';
@@ -20,7 +26,7 @@ export class Project extends AbstractBaseEntity<Project> {
   @CreateDateColumn()
   createdAt: Date;
 
-  @ManyToMany(() => User, (user) => user.projects, { onDelete: 'CASCADE' })
+  @ManyToMany(() => User, user => user.projects, { onDelete: 'CASCADE' })
   @JoinTable({
     joinColumn: { name: 'projectId' },
     inverseJoinColumn: { name: 'userId' }
