@@ -8,7 +8,7 @@ import { ConfigService } from '@nestjs/config';
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        database: configService.getOrThrow('POSTGRES_DATABASE'),
+        database: configService.getOrThrow('POSTGRES_DB'),
         password: configService.getOrThrow('POSTGRES_PASSWORD'),
         username: configService.getOrThrow('POSTGRES_USER'),
         port: configService.getOrThrow('POSTGRES_PORT'),
