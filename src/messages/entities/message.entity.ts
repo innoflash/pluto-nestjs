@@ -1,6 +1,7 @@
 import { Column, CreateDateColumn, Entity, ManyToOne } from 'typeorm';
 import { AbstractBaseEntity } from '../../database/abstract-base.entity';
 import { User } from '../../users/entities/user.entity';
+import { ReadStatus } from '../enums/read-status';
 
 @Entity('messages')
 export class Message extends AbstractBaseEntity<Message> {
@@ -13,13 +14,16 @@ export class Message extends AbstractBaseEntity<Message> {
   @CreateDateColumn()
   createdAt: Date;
 
-  @ManyToOne(() => User, (user) => user.outgoingMessages, {
-    onDelete: 'CASCADE',
+  @Column({ default: ReadStatus.NEW })
+  status: ReadStatus;
+
+  @ManyToOne(() => User, user => user.outgoingMessages, {
+    onDelete: 'CASCADE'
   })
   sender: User;
 
-  @ManyToOne(() => User, (user) => user.incomingMessages, {
-    onDelete: 'CASCADE',
+  @ManyToOne(() => User, user => user.incomingMessages, {
+    onDelete: 'CASCADE'
   })
   recipient: User;
 }
