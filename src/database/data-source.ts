@@ -14,6 +14,7 @@ import ProjectUsersSeeder from './seeds/project-users.seeder';
 import ProjectSeeder from './seeds/project.seeder';
 import MessageSeeder from './seeds/message.seeder';
 import BoardMessageSeeder from './seeds/board-message.seeder';
+import SocialMediaSeeder from './seeds/social-media.seeder';
 
 config();
 
@@ -40,7 +41,8 @@ export const dataSourceOptions: PostgresConnectionOptions & SeederOptions = {
     ProjectSeeder,
     ProjectUsersSeeder,
     MessageSeeder,
-    BoardMessageSeeder
+    BoardMessageSeeder,
+    SocialMediaSeeder
   ],
   factories: ['src/database/factories/**/*{.ts,.js}']
 };
