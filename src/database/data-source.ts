@@ -13,6 +13,7 @@ import TaskSeeder from './seeds/task.seeder';
 import ProjectUsersSeeder from './seeds/project-users.seeder';
 import ProjectSeeder from './seeds/project.seeder';
 import MessageSeeder from './seeds/message.seeder';
+import BoardMessageSeeder from './seeds/board-message.seeder';
 
 config();
 
@@ -38,7 +39,8 @@ export const dataSourceOptions: PostgresConnectionOptions & SeederOptions = {
     TaskSeeder,
     ProjectSeeder,
     ProjectUsersSeeder,
-    MessageSeeder
+    MessageSeeder,
+    BoardMessageSeeder
   ],
   factories: ['src/database/factories/**/*{.ts,.js}']
 };
