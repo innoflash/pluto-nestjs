@@ -1,4 +1,4 @@
-import { IsInt, IsOptional } from 'class-validator';
+import { IsIn, IsInt, IsOptional } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 
@@ -20,4 +20,11 @@ export class ListMessagesDto {
     description: 'The relationships that you want loaded'
   })
   include?: string[];
+
+  @IsOptional()
+  @IsIn(['asc', 'desc'])
+  @ApiPropertyOptional({
+    description: 'Order in which messages will be rendered'
+  })
+  order?: string;
 }
