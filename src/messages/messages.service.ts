@@ -21,10 +21,10 @@ export class MessagesService {
     }
 
     if (listMessagesDto.include) {
-      console.log(this.resolveRelations(listMessagesDto.include));
       findManyOptions.relations = this.resolveRelations(
         listMessagesDto.include
       );
+      findManyOptions.relationLoadStrategy = 'query';
     } else {
       findManyOptions.loadRelationIds = true;
     }
