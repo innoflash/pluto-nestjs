@@ -2,7 +2,7 @@ import { Controller, Get, Query } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { MessageStatusFilter } from './filters/message-status.filter';
 import { AbstractFilter } from '../shared/abstract-filter';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { MessageListingDto } from './responses/message-listing.dto';
 import { QueryDto } from '../shared/dto/query.dto';
 
@@ -11,6 +11,9 @@ export class MessagesController {
   public constructor(private readonly messagesService: MessagesService) {}
 
   @ApiOkResponse({ type: MessageListingDto })
+  @ApiOperation({
+    summary: 'This lists the messages for the given options'
+  })
   @Get()
   public list(@Query() queryParams: QueryDto) {
     const filters: Record<string, typeof AbstractFilter> = {
