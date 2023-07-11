@@ -1,5 +1,6 @@
 import { IsInt, IsOptional } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
+import { Transform, Type } from 'class-transformer';
 
 export class ListMessagesDto {
   @IsOptional()
@@ -11,4 +12,12 @@ export class ListMessagesDto {
   @IsInt()
   @ApiPropertyOptional()
   page?: number;
+
+  @IsOptional()
+  @Type(() => String)
+  @Transform(value => value.value.toString().split(','))
+  @ApiPropertyOptional({
+    description: 'The relationships that you want loaded'
+  })
+  include?: string[];
 }

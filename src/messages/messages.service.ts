@@ -20,6 +20,28 @@ export class MessagesService {
       findManyOptions.take = listMessagesDto.limit;
     }
 
+    if (listMessagesDto.include) {
+      findManyOptions.relations = this.resolveRelations(
+        listMessagesDto.include
+      );
+    } else {
+      findManyOptions.loadRelationIds = true;
+    }
+
     return this.messagesRepository.find(findManyOptions);
+  }
+
+  private resolveRelations(relations: string[]) {
+    const queryRelations = relations
+      .map(relation => {
+        return {
+          [relation]: true
+        };
+      })
+      .reduce((prev, cur) => {
+        return { ...prev, ...cur };
+      }, {});
+
+    return queryRelations;
   }
 }
