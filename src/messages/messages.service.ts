@@ -21,6 +21,7 @@ export class MessagesService {
     }
 
     if (listMessagesDto.include) {
+      console.log(this.resolveRelations(listMessagesDto.include));
       findManyOptions.relations = this.resolveRelations(
         listMessagesDto.include
       );
@@ -31,17 +32,28 @@ export class MessagesService {
     return this.messagesRepository.find(findManyOptions);
   }
 
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   private resolveRelations(relations: string[]) {
-    const queryRelations = relations
+    return relations
       .map(relation => {
+        let currentRelation = relation;
+        let nestedRelations: Array<string> = [];
+        if (relation.includes('.')) {
+          currentRelation = relation.substring(0, relation.indexOf('.'));
+          nestedRelations = relation
+            .substring(relation.indexOf('.') + 1)
+            .split('.');
+        }
+
         return {
-          [relation]: true
+          [currentRelation]: !nestedRelations.length
+            ? true
+            : this.resolveRelations(nestedRelations)
         };
       })
       .reduce((prev, cur) => {
         return { ...prev, ...cur };
       }, {});
-
-    return queryRelations;
   }
 }
