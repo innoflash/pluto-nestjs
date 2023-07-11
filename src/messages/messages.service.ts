@@ -6,6 +6,7 @@ import { ListMessagesDto } from './dtos/list-messages.dto';
 import { AbstractFilter } from '../shared/abstract-filter';
 import { LoadRelationshipsFilter } from '../shared/filters/load-relationships.filter';
 import { OrderingFilter } from '../shared/filters/ordering.filter';
+import { LimitingFilter } from '../shared/filters/limiting.filter';
 
 @Injectable()
 export class MessagesService {
@@ -31,7 +32,8 @@ export class MessagesService {
 
     const defaultFilters = [
       new LoadRelationshipsFilter().filter(listMessagesDto.include),
-      new OrderingFilter().filter(listMessagesDto)
+      new OrderingFilter().filter(listMessagesDto),
+      new LimitingFilter().filter(listMessagesDto)
     ];
 
     defaultFilters.forEach(filter => {
@@ -40,12 +42,6 @@ export class MessagesService {
         ...filter
       };
     });
-
-    if (listMessagesDto.limit) {
-      findManyOptions.skip =
-        ((listMessagesDto.page || 1) - 1) * listMessagesDto.limit;
-      findManyOptions.take = listMessagesDto.limit;
-    }
 
     //RUN filters
     Object.entries(this.filters).forEach(([key, filterClass]) => {
