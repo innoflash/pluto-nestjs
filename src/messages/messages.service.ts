@@ -29,11 +29,9 @@ export class MessagesService {
       findManyOptions.loadRelationIds = true;
     }
 
-    if (listMessagesDto.order) {
-      findManyOptions.order = {
-        id: listMessagesDto.order.toUpperCase()
-      };
-    }
+    findManyOptions.order = {
+      [listMessagesDto.orderBy || 'id']: listMessagesDto.order || 'asc'
+    };
 
     return this.messagesRepository.find(findManyOptions);
   }

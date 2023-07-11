@@ -1,4 +1,4 @@
-import { IsIn, IsInt, IsOptional } from 'class-validator';
+import { IsIn, IsInt, IsOptional, IsString } from 'class-validator';
 import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 
@@ -27,4 +27,11 @@ export class ListMessagesDto {
     description: 'Order in which messages will be rendered'
   })
   order?: string;
+
+  @IsOptional()
+  @IsString()
+  @ApiPropertyOptional({
+    description: 'The column in which messages should be ordered by'
+  })
+  orderBy?: string;
 }
