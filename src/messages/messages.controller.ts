@@ -10,7 +10,7 @@ export class MessagesController {
 
   @Get()
   public list(@Query() queryParams: ListMessagesDto) {
-    console.log(queryParams.filters.entries());
+    console.log(queryParams.filters?.entries());
 
     const filters: Record<string, typeof AbstractFilter> = {
       'message-status': MessageStatusFilter

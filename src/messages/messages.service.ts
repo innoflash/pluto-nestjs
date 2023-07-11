@@ -25,7 +25,7 @@ export class MessagesService {
     return this;
   }
 
-  public list(listMessagesDto: ListMessagesDto) {
+  public async list(listMessagesDto: ListMessagesDto) {
     let findManyOptions: FindManyOptions = {
       relationLoadStrategy: 'query'
     };
@@ -57,6 +57,18 @@ export class MessagesService {
       }
     });
 
-    return this.messagesRepository.find(findManyOptions);
+    // Whether or not to paginate or not.
+    if (!listMessagesDto.limit && !listMessagesDto.page) {
+      delete findManyOptions.skip;
+      delete findManyOptions.take;
+
+      return this.messagesRepository.find(findManyOptions);
+    }
+
+    const [data, total] = await this.messagesRepository.findAndCount(
+      findManyOptions
+    );
+
+    return { data, total };
   }
 }

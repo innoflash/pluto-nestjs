@@ -4,8 +4,8 @@ import { FindManyOptions } from 'typeorm';
 export class LimitingFilter extends AbstractFilter {
   public filter(value: { page?: number; limit?: number }): FindManyOptions {
     return {
-      skip: ((value.page || 1) - 1) * value.limit,
-      take: value.limit
+      skip: ((value.page || 1) - 1) * value.limit || 20,
+      take: value.limit || 20
     };
   }
 }

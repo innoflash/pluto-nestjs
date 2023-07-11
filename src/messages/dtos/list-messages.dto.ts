@@ -26,7 +26,10 @@ export class ListMessagesDto {
   //@Transform(value => value.value.toString().split(','))
   @ApiPropertyOptional({
     description: 'The filters you want to apply',
-    type: 'object'
+    type: 'object',
+    example: {
+      'filters[message-status]': 'read'
+    }
   })
   filters?: Map<string, any>;
 
