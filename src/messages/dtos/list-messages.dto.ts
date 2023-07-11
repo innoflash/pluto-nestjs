@@ -22,6 +22,15 @@ export class ListMessagesDto {
   include?: string[];
 
   @IsOptional()
+  @Type(() => String)
+  //@Transform(value => value.value.toString().split(','))
+  @ApiPropertyOptional({
+    description: 'The filters you want to apply',
+    type: 'object'
+  })
+  filters?: Map<string, any>;
+
+  @IsOptional()
   @IsIn(['asc', 'desc'])
   @ApiPropertyOptional({
     description: 'Order in which messages will be rendered'

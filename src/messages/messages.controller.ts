@@ -1,6 +1,7 @@
 import { Controller, Get, Query } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { ListMessagesDto } from './dtos/list-messages.dto';
+import { MessageStatusFilter } from './filters/message-status.filter';
 
 @Controller('messages')
 export class MessagesController {
@@ -8,8 +9,12 @@ export class MessagesController {
 
   @Get()
   public list(@Query() queryParams: ListMessagesDto) {
-    console.log(queryParams);
+    console.log(queryParams.filters.entries());
 
-    return this.messagesService.list(queryParams);
+    const filters = {
+      'message-status': MessageStatusFilter
+    };
+
+    return this.messagesService.setFilters(filters).list(queryParams);
   }
 }
