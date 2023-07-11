@@ -5,6 +5,7 @@ import { FindManyOptions, Repository } from 'typeorm';
 import { ListMessagesDto } from './dtos/list-messages.dto';
 import { AbstractFilter } from '../shared/abstract-filter';
 import { LoadRelationshipsFilter } from '../shared/filters/load-relationships.filter';
+import { OrderingFilter } from '../shared/filters/ordering.filter';
 
 @Injectable()
 export class MessagesService {
@@ -28,22 +29,23 @@ export class MessagesService {
       relationLoadStrategy: 'query'
     };
 
+    const defaultFilters = [
+      new LoadRelationshipsFilter().filter(listMessagesDto.include),
+      new OrderingFilter().filter(listMessagesDto)
+    ];
+
+    defaultFilters.forEach(filter => {
+      findManyOptions = {
+        ...findManyOptions,
+        ...filter
+      };
+    });
+
     if (listMessagesDto.limit) {
       findManyOptions.skip =
         ((listMessagesDto.page || 1) - 1) * listMessagesDto.limit;
       findManyOptions.take = listMessagesDto.limit;
     }
-
-    //Apply relationships filter.
-    const relationshipsFilter = new LoadRelationshipsFilter();
-    findManyOptions = {
-      ...findManyOptions,
-      ...relationshipsFilter.filter(listMessagesDto.include)
-    };
-
-    findManyOptions.order = {
-      [listMessagesDto.orderBy || 'id']: listMessagesDto.order || 'asc'
-    };
 
     //RUN filters
     Object.entries(this.filters).forEach(([key, filterClass]) => {
