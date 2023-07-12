@@ -14,6 +14,12 @@ export class Message extends AbstractBaseEntity<Message> {
   @CreateDateColumn()
   createdAt: Date;
 
+  @Column({ type: 'number' })
+  senderId: number;
+
+  @Column({ type: 'number' })
+  recipientId: number;
+
   @Column({ default: ReadStatus.NEW })
   status: ReadStatus;
 
