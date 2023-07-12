@@ -6,6 +6,7 @@ import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { MessageListingDto } from './responses/message-listing.dto';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
+import { BySenderFilter } from './filters/by-sender.filter';
 
 @Controller('messages')
 export class MessagesController {
@@ -18,7 +19,8 @@ export class MessagesController {
   @Get()
   public list(@Query() queryParams: ListRequestDto) {
     const filters: Record<string, typeof BaseFilter> = {
-      'message-status': MessageStatusFilter
+      'message-status': MessageStatusFilter,
+      'by-sender': BySenderFilter
     };
 
     return this.messagesService.setFilters(filters).list(queryParams);
