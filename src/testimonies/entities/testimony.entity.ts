@@ -10,6 +10,9 @@ export class Testimony extends AbstractBaseEntity<Testimony> {
   @CreateDateColumn()
   createdAt: Date;
 
-  @ManyToOne(() => User, (user) => user.testimonies, { onDelete: 'CASCADE' })
+  @Column({ type: 'number' })
+  userId: number;
+
+  @ManyToOne(() => User, user => user.testimonies, { onDelete: 'CASCADE' })
   user: User;
 }

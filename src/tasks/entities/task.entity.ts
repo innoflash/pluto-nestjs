@@ -13,6 +13,9 @@ export class Task extends AbstractBaseEntity<Task> {
   @CreateDateColumn()
   endTime: Date;
 
-  @ManyToOne(() => User, (user) => user.tasks, { onDelete: 'SET NULL' })
+  @Column({ type: 'number' })
+  userId: number;
+
+  @ManyToOne(() => User, user => user.tasks, { onDelete: 'SET NULL' })
   user: User;
 }

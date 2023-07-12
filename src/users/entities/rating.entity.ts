@@ -1,4 +1,11 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, OneToOne, UpdateDateColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  OneToOne,
+  UpdateDateColumn
+} from 'typeorm';
 import { AbstractBaseEntity } from '../../database/abstract-base.entity';
 import { User } from './user.entity';
 
@@ -13,7 +20,10 @@ export class Rating extends AbstractBaseEntity<Rating> {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  @OneToOne(() => User, (user) => user.rating, { onDelete: 'CASCADE' })
+  @Column({ type: 'number' })
+  userId: number;
+
+  @OneToOne(() => User, user => user.rating, { onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
 }

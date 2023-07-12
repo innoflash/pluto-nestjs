@@ -14,6 +14,9 @@ export class BoardMessage extends AbstractBaseEntity<BoardMessage> {
   @CreateDateColumn()
   createdAt: Date;
 
+  @Column({ type: 'number' })
+  userId: number;
+
   @ManyToOne(() => User, user => user.boardMessages, { onDelete: 'CASCADE' })
   user: User;
 }

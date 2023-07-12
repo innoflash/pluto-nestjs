@@ -16,6 +16,9 @@ export class Profile extends AbstractBaseEntity<Profile> {
   @Column({ nullable: true })
   profilePhoto?: string;
 
+  @Column({ type: 'number' })
+  userId: number;
+
   @OneToOne(() => User, user => user.profile, { onDelete: 'CASCADE' })
   @JoinColumn()
   user: User;
