@@ -4,6 +4,7 @@ import { ListRequestDto } from './dto/list-request.dto';
 import { LoadRelationshipsFilter } from './filters/load-relationships.filter';
 import { OrderingFilter } from './filters/ordering.filter';
 import { LimitingFilter } from './filters/limiting.filter';
+import { FindRequestDto } from './dto/find-request.dto';
 
 export abstract class AbstractCrudService<T> {
   private filters: Record<string, typeof AbstractFilter>;
@@ -18,38 +19,54 @@ export abstract class AbstractCrudService<T> {
     return this;
   }
 
-  public async list<T extends ListRequestDto>(queryDto: T) {
-    const findOptions = this.findOptions(queryDto);
+  public async list<T extends ListRequestDto>(listRequestDto: T) {
+    let findManyOptions = this.findOptions(listRequestDto) as FindManyOptions;
+
+    [
+      new OrderingFilter().filter(listRequestDto),
+      new LimitingFilter().filter(listRequestDto)
+    ].forEach(filter => {
+      findManyOptions = {
+        ...findManyOptions,
+        ...filter
+      };
+    });
+
+    console.log(findManyOptions);
 
     // Whether or not to paginate or not.
-    if (!queryDto.limit && !queryDto.page) {
-      if ('skip' in findOptions) delete findOptions.skip;
-      if ('take' in findOptions) delete findOptions.take;
+    if (!listRequestDto.limit && !listRequestDto.page) {
+      if ('skip' in findManyOptions) delete findManyOptions.skip;
+      if ('take' in findManyOptions) delete findManyOptions.take;
 
-      return this.getRepository().find(findOptions);
+      return this.getRepository().find(findManyOptions);
     }
 
-    const [data, total] = await this.getRepository().findAndCount(findOptions);
+    const [data, total] = await this.getRepository().findAndCount(
+      findManyOptions
+    );
 
     return { data, total };
   }
 
+  public async find<T extends FindRequestDto>(id: number | string, key = 'id') {
+    return this.getRepository().findOne({});
+  }
+
   protected findOptions(
-    listRequestDto: ListRequestDto
+    listRequestDto: FindRequestDto
   ): FindManyOptions<T> | FindOneOptions<T> {
-    let findManyOptions: FindManyOptions = {
+    let findOptions: FindManyOptions = {
       relationLoadStrategy: 'query'
     };
 
     const defaultFilters = [
-      new LoadRelationshipsFilter().filter(listRequestDto.include),
-      new OrderingFilter().filter(listRequestDto),
-      new LimitingFilter().filter(listRequestDto)
+      new LoadRelationshipsFilter().filter(listRequestDto.include)
     ];
 
     defaultFilters.forEach(filter => {
-      findManyOptions = {
-        ...findManyOptions,
+      findOptions = {
+        ...findOptions,
         ...filter
       };
     });
@@ -61,13 +78,13 @@ export abstract class AbstractCrudService<T> {
       const filterInstance = new filterClass(key);
 
       if (listRequestDto.filters?.has(key)) {
-        findManyOptions = {
-          ...findManyOptions,
+        findOptions = {
+          ...findOptions,
           ...filterInstance.filter(listRequestDto.filters.get(key))
         };
       }
     });
 
-    return findManyOptions;
+    return findOptions;
   }
 }
