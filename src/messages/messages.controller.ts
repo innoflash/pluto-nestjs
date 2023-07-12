@@ -7,6 +7,7 @@ import { MessageListingDto } from './responses/message-listing.dto';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
 import { BySenderFilter } from './filters/by-sender.filter';
+import { ForRecipientFilter } from './filters/for-recipient.filter';
 
 @Controller('messages')
 export class MessagesController {
@@ -20,7 +21,8 @@ export class MessagesController {
   public list(@Query() queryParams: ListRequestDto) {
     const filters: Record<string, typeof BaseFilter> = {
       'message-status': MessageStatusFilter,
-      'by-sender': BySenderFilter
+      'by-sender': BySenderFilter,
+      'for-recipient': ForRecipientFilter
     };
 
     return this.messagesService.setFilters(filters).list(queryParams);
