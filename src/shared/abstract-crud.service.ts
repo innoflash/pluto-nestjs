@@ -1,4 +1,4 @@
-import { AbstractFilter } from './abstract-filter';
+import { BaseFilter } from './base-filter';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { ListRequestDto } from './dto/list-request.dto';
 import { LoadRelationshipsFilter } from './filters/load-relationships.filter';
@@ -8,12 +8,12 @@ import { FindRequestDto } from './dto/find-request.dto';
 import { FindByIdFilter } from './filters/find-by-id.filter';
 
 export abstract class AbstractCrudService<T> {
-  private filters: Record<string, typeof AbstractFilter> = {};
+  private filters: Record<string, typeof BaseFilter> = {};
 
   protected abstract getRepository(): Repository<T>;
 
   public setFilters(
-    filters: Record<string, typeof AbstractFilter>
+    filters: Record<string, typeof BaseFilter>
   ): AbstractCrudService<T> {
     this.filters = filters;
 

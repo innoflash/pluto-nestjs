@@ -1,7 +1,7 @@
-import { AbstractFilter } from '../abstract-filter';
+import { BaseFilter } from '../base-filter';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
 
-export class LoadRelationshipsFilter extends AbstractFilter {
+export class LoadRelationshipsFilter extends BaseFilter {
   public filter(value?: Array<string>): FindManyOptions | FindOneOptions {
     if (value) {
       return {

@@ -1,7 +1,7 @@
-import { AbstractFilter } from '../abstract-filter';
+import { BaseFilter } from '../base-filter';
 import { FindOneOptions } from 'typeorm';
 
-export class FindByIdFilter extends AbstractFilter {
+export class FindByIdFilter extends BaseFilter {
   public filter(id: number | string, key = 'id'): FindOneOptions {
     return {
       where: {

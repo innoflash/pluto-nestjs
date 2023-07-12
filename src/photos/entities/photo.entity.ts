@@ -13,6 +13,9 @@ export class Photo extends AbstractBaseEntity<Photo> {
   @CreateDateColumn()
   createdAt: Date;
 
-  @ManyToOne(() => User, (user) => user.photos, { onDelete: 'CASCADE' })
+  @Column({ type: 'number' })
+  userId: number;
+
+  @ManyToOne(() => User, user => user.photos, { onDelete: 'CASCADE' })
   user: User;
 }

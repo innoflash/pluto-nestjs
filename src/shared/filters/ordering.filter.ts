@@ -1,7 +1,7 @@
-import { AbstractFilter } from '../abstract-filter';
+import { BaseFilter } from '../base-filter';
 import { FindManyOptions } from 'typeorm';
 
-export class OrderingFilter extends AbstractFilter {
+export class OrderingFilter extends BaseFilter {
   public filter(value: { order?: string; orderBy?: string }): FindManyOptions {
     return {
       order: {

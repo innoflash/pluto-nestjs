@@ -1,7 +1,7 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { MessageStatusFilter } from './filters/message-status.filter';
-import { AbstractFilter } from '../shared/abstract-filter';
+import { BaseFilter } from '../shared/base-filter';
 import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
 import { MessageListingDto } from './responses/message-listing.dto';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
@@ -17,7 +17,7 @@ export class MessagesController {
   })
   @Get()
   public list(@Query() queryParams: ListRequestDto) {
-    const filters: Record<string, typeof AbstractFilter> = {
+    const filters: Record<string, typeof BaseFilter> = {
       'message-status': MessageStatusFilter
     };
 

@@ -1,8 +1,8 @@
 import { FindManyOptions } from 'typeorm';
-import { AbstractFilter } from '../../shared/abstract-filter';
+import { BaseFilter } from '../../shared/base-filter';
 import { ReadStatus } from '../enums/read-status';
 
-export class MessageStatusFilter extends AbstractFilter {
+export class MessageStatusFilter extends BaseFilter {
   public filter(value: ReadStatus): FindManyOptions {
     return {
       where: {
