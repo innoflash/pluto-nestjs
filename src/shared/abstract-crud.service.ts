@@ -5,9 +5,10 @@ import { LoadRelationshipsFilter } from './filters/load-relationships.filter';
 import { OrderingFilter } from './filters/ordering.filter';
 import { LimitingFilter } from './filters/limiting.filter';
 import { FindRequestDto } from './dto/find-request.dto';
+import { FindByIdFilter } from './filters/find-by-id.filter';
 
 export abstract class AbstractCrudService<T> {
-  private filters: Record<string, typeof AbstractFilter>;
+  private filters: Record<string, typeof AbstractFilter> = {};
 
   protected abstract getRepository(): Repository<T>;
 
@@ -32,8 +33,6 @@ export abstract class AbstractCrudService<T> {
       };
     });
 
-    console.log(findManyOptions);
-
     // Whether or not to paginate or not.
     if (!listRequestDto.limit && !listRequestDto.page) {
       if ('skip' in findManyOptions) delete findManyOptions.skip;
@@ -49,8 +48,23 @@ export abstract class AbstractCrudService<T> {
     return { data, total };
   }
 
-  public async find<T extends FindRequestDto>(id: number | string, key = 'id') {
-    return this.getRepository().findOne({});
+  public find<T extends FindRequestDto>(
+    id: number | string,
+    findRequestDto?: T,
+    key = 'id'
+  ) {
+    let findOneOptions = this.findOptions(
+      findRequestDto || {}
+    ) as FindOneOptions;
+
+    findOneOptions = {
+      ...findOneOptions,
+      ...new FindByIdFilter().filter(id, key)
+    };
+
+    console.log(findOneOptions);
+
+    return this.getRepository().findOne(findOneOptions);
   }
 
   protected findOptions(

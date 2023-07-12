@@ -1,7 +1,6 @@
 import { config } from 'dotenv';
 import { DataSource } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
-import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 import { SeederOptions } from 'typeorm-extension';
 import UserSeeder from './seeds/user.seeder';
 import RoleSeeder from './seeds/role.seeder';
@@ -15,6 +14,7 @@ import ProjectSeeder from './seeds/project.seeder';
 import MessageSeeder from './seeds/message.seeder';
 import BoardMessageSeeder from './seeds/board-message.seeder';
 import SocialMediaSeeder from './seeds/social-media.seeder';
+import { PostgresConnectionOptions } from 'typeorm/driver/postgres/PostgresConnectionOptions';
 
 config();
 
