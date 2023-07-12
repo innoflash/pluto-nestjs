@@ -1,6 +1,6 @@
 import { AbstractFilter } from './abstract-filter';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
-import { QueryDto } from './dto/query.dto';
+import { ListRequestDto } from './dto/list-request.dto';
 import { LoadRelationshipsFilter } from './filters/load-relationships.filter';
 import { OrderingFilter } from './filters/ordering.filter';
 import { LimitingFilter } from './filters/limiting.filter';
@@ -18,7 +18,7 @@ export abstract class AbstractCrudService<T> {
     return this;
   }
 
-  public async list<T extends QueryDto>(queryDto: T) {
+  public async list<T extends ListRequestDto>(queryDto: T) {
     const findOptions = this.findOptions(queryDto);
 
     // Whether or not to paginate or not.
@@ -35,16 +35,16 @@ export abstract class AbstractCrudService<T> {
   }
 
   protected findOptions(
-    queryDto: QueryDto
+    listRequestDto: ListRequestDto
   ): FindManyOptions<T> | FindOneOptions<T> {
     let findManyOptions: FindManyOptions = {
       relationLoadStrategy: 'query'
     };
 
     const defaultFilters = [
-      new LoadRelationshipsFilter().filter(queryDto.include),
-      new OrderingFilter().filter(queryDto),
-      new LimitingFilter().filter(queryDto)
+      new LoadRelationshipsFilter().filter(listRequestDto.include),
+      new OrderingFilter().filter(listRequestDto),
+      new LimitingFilter().filter(listRequestDto)
     ];
 
     defaultFilters.forEach(filter => {
@@ -60,10 +60,10 @@ export abstract class AbstractCrudService<T> {
       // @ts-ignore
       const filterInstance = new filterClass(key);
 
-      if (queryDto.filters?.has(key)) {
+      if (listRequestDto.filters?.has(key)) {
         findManyOptions = {
           ...findManyOptions,
-          ...filterInstance.filter(queryDto.filters.get(key))
+          ...filterInstance.filter(listRequestDto.filters.get(key))
         };
       }
     });
