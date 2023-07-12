@@ -7,14 +7,14 @@ import { LimitingFilter } from './filters/limiting.filter';
 import { FindRequestDto } from './dto/find-request.dto';
 import { FindByIdFilter } from './filters/find-by-id.filter';
 
-export abstract class AbstractCrudService<T> {
+export abstract class BaseCrudService<T> {
   private filters: Record<string, typeof BaseFilter> = {};
 
   protected abstract getRepository(): Repository<T>;
 
   public setFilters(
     filters: Record<string, typeof BaseFilter>
-  ): AbstractCrudService<T> {
+  ): BaseCrudService<T> {
     this.filters = filters;
 
     return this;
