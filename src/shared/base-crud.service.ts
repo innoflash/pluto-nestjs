@@ -45,7 +45,20 @@ export abstract class BaseCrudService<T> {
       findManyOptions
     );
 
-    return { data, total };
+    return {
+      data,
+      meta: {
+        total,
+        count: data.length,
+        perPage: listRequestDto.limit || findManyOptions.take,
+        currentPage:
+          listRequestDto.page ||
+          findManyOptions.skip / findManyOptions.take - 1,
+        from: findManyOptions.skip,
+        to: findManyOptions.skip + findManyOptions.take,
+        lastPage: Math.ceil(total / findManyOptions.take)
+      }
+    };
   }
 
   public find<T extends FindRequestDto>(
@@ -61,8 +74,6 @@ export abstract class BaseCrudService<T> {
       ...findOneOptions,
       ...new FindByIdFilter().filter(id, key)
     };
-
-    console.log(findOneOptions);
 
     return this.getRepository().findOne(findOneOptions);
   }
