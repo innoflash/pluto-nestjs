@@ -20,6 +20,7 @@ async function bootstrap() {
     .setTitle('Pluto sample API')
     .setDescription('An API to test how cool NestJS is')
     .setVersion('1.0')
+    .addBearerAuth()
     .addTag('pluto')
     .build();
   const document = SwaggerModule.createDocument(app, config);

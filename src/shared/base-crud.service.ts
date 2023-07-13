@@ -6,12 +6,28 @@ import { OrderingFilter } from './filters/ordering.filter';
 import { LimitingFilter } from './filters/limiting.filter';
 import { FindRequestDto } from './dto/find-request.dto';
 import { FindByIdFilter } from './filters/find-by-id.filter';
+import { AuthorizeFilter } from './types/authorize-filter';
 
 export abstract class BaseCrudService<T> {
   private filters: Record<string, typeof BaseFilter> = {};
+  private authorizeFilterOptions: AuthorizeFilter<any> = {};
 
+  /* The `protected abstract getRepository(): Repository<T>` method is a placeholder method that needs
+  to be implemented by the child classes that extend the `BaseCrudService` class. It is used to
+  retrieve the repository object for the specific entity type `T` from the TypeORM library. The
+  `getRepository` method is abstract, meaning it does not have an implementation in the
+  `BaseCrudService` class itself, but it must be implemented in the child classes. This allows each
+  child class to provide its own implementation of the `getRepository` method based on the specific
+  entity type it is working with. */
   protected abstract getRepository(): Repository<T>;
 
+  /**
+   * The function `setFilters` sets the filters for a CRUD service and returns the service itself.
+   * @example {'by-user': ByUserFilter }
+   * @param filters - The `filters` parameter is an object that maps string keys to the type of
+   * `BaseFilter`.
+   * @returns The method is returning an instance of the BaseCrudService class.
+   */
   public setFilters(
     filters: Record<string, typeof BaseFilter>
   ): BaseCrudService<T> {
@@ -20,6 +36,34 @@ export abstract class BaseCrudService<T> {
     return this;
   }
 
+  /**
+   * The `authorizeFilters` function sets the authorize filter options for a CRUD service and returns the
+   * service itself.
+   * @example { 'by-user' : true'}
+   * @example { 'by-user': () => false}
+   * @param authorizeFilterOptions - The `authorizeFilterOptions` parameter is of type `AuthorizeFilter`
+   * and accepts a value that is one of the keys of the `filters` property of the current object.
+   * @returns The method `authorizeFilters` is returning an instance of `BaseCrudService<T>`.
+   */
+  public authorizeFilters(
+    authorizeFilterOptions: AuthorizeFilter<keyof typeof this.filters>
+  ): BaseCrudService<T> {
+    this.authorizeFilterOptions = authorizeFilterOptions;
+
+    return this;
+  }
+
+  /**
+   * The `list` function retrieves a list of data based on the provided request parameters, including
+   * filtering, ordering, and pagination options.
+   * @param {T} listRequestDto - The `listRequestDto` parameter is a generic type `T` that extends the
+   * `ListRequestDto` interface. It represents the request object for listing data. The `ListRequestDto`
+   * interface likely contains properties such as `limit` (number of items per page), `page` (current
+   * @returns either an array of data or an object with data and meta information. If the limit and page
+   * properties are not provided in the listRequestDto, the function returns an array of data. If the
+   * limit and page properties are provided, the function returns an object with data and meta
+   * information.
+   */
   public async list<T extends ListRequestDto>(listRequestDto: T) {
     let findManyOptions = this.findOptions(listRequestDto) as FindManyOptions;
 
@@ -61,6 +105,19 @@ export abstract class BaseCrudService<T> {
     };
   }
 
+  /**
+   * The find function retrieves a single entity from the repository based on the provided id and
+   * optional findRequestDto.
+   * @param {number | string} id - The `id` parameter is the identifier used to find the entity in the
+   * database. It can be either a number or a string.
+   * @param {T} [findRequestDto] - `findRequestDto` is an optional parameter of type `T`, which extends
+   * `FindRequestDto`. It is used to provide additional filtering options for the find operation. If not
+   * provided, an empty object is used as the default value.
+   * @param [key=id] - The `key` parameter is a string that represents the property name to use for
+   * finding the entity. By default, it is set to `'id'`, which means the entity will be found using the
+   * `id` property. However, you can provide a different property name if needed.
+   * @returns The method is returning the result of the `findOne` method call on the repository.
+   */
   public find<T extends FindRequestDto>(
     id: number | string,
     findRequestDto?: T,
@@ -78,6 +135,14 @@ export abstract class BaseCrudService<T> {
     return this.getRepository().findOne(findOneOptions);
   }
 
+  /**
+   * The function `findOptions` takes a `listRequestDto` object and returns a `FindManyOptions` or
+   * `FindOneOptions` object based on the provided filters and include options.
+   * @param {FindRequestDto} listRequestDto - The `listRequestDto` parameter is an object of type
+   * `FindRequestDto`. It contains information about the request for finding data, such as filters,
+   * includes, and other options.
+   * @returns a variable of type `FindManyOptions<T> | FindOneOptions<T>`.
+   */
   protected findOptions(
     listRequestDto: FindRequestDto
   ): FindManyOptions<T> | FindOneOptions<T> {
@@ -97,18 +162,32 @@ export abstract class BaseCrudService<T> {
     });
 
     //RUN filters
-    Object.entries(this.filters).forEach(([key, filterClass]) => {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      const filterInstance = new filterClass(key);
+    Object.entries(this.filters)
+      .filter(([key]) => {
+        if (Object.keys(this.authorizeFilterOptions).includes(key)) {
+          if (typeof this.authorizeFilterOptions[key] === 'function') {
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            return this.authorizeFilterOptions[key]();
+          }
 
-      if (listRequestDto.filters?.has(key)) {
-        findOptions = {
-          ...findOptions,
-          ...filterInstance.filter(listRequestDto.filters.get(key))
-        };
-      }
-    });
+          return this.authorizeFilterOptions[key];
+        }
+
+        return true;
+      })
+      .forEach(([key, filterClass]) => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const filterInstance = new filterClass(key);
+
+        if (listRequestDto.filters?.has(key)) {
+          findOptions = {
+            ...findOptions,
+            ...filterInstance.filter(listRequestDto.filters.get(key))
+          };
+        }
+      });
 
     return findOptions;
   }

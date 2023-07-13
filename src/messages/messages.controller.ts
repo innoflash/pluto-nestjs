@@ -2,7 +2,7 @@ import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { MessageStatusFilter } from './filters/message-status.filter';
 import { BaseFilter } from '../shared/base-filter';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { MessageListingDto } from './responses/message-listing.dto';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
@@ -10,6 +10,7 @@ import { BySenderFilter } from './filters/by-sender.filter';
 import { ForRecipientFilter } from './filters/for-recipient.filter';
 
 @Controller('messages')
+@ApiTags('Messages')
 export class MessagesController {
   public constructor(private readonly messagesService: MessagesService) {}
 
