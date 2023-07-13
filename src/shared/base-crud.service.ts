@@ -7,6 +7,7 @@ import { LimitingFilter } from './filters/limiting.filter';
 import { FindRequestDto } from './dto/find-request.dto';
 import { FindByIdFilter } from './filters/find-by-id.filter';
 import { AuthorizeFilter } from './types/authorize-filter';
+import merge from 'lodash.merge';
 
 export abstract class BaseCrudService<T> {
   private filters: Record<string, typeof BaseFilter> = {};
@@ -70,13 +71,9 @@ export abstract class BaseCrudService<T> {
     [
       new OrderingFilter().filter(listRequestDto),
       new LimitingFilter().filter(listRequestDto)
-    ].forEach(filter => {
-      findManyOptions = {
-        ...findManyOptions,
-        ...filter
-      };
-    });
+    ].forEach(filter => (findManyOptions = merge(findManyOptions, filter)));
 
+    console.log(findManyOptions);
     // Whether or not to paginate or not.
     if (!listRequestDto.limit && !listRequestDto.page) {
       if ('skip' in findManyOptions) delete findManyOptions.skip;
@@ -127,10 +124,10 @@ export abstract class BaseCrudService<T> {
       findRequestDto || {}
     ) as FindOneOptions;
 
-    findOneOptions = {
-      ...findOneOptions,
-      ...new FindByIdFilter().filter(id, key)
-    };
+    findOneOptions = merge(
+      findOneOptions,
+      new FindByIdFilter().filter(id, key)
+    );
 
     return this.getRepository().findOne(findOneOptions);
   }
@@ -155,10 +152,7 @@ export abstract class BaseCrudService<T> {
     ];
 
     defaultFilters.forEach(filter => {
-      findOptions = {
-        ...findOptions,
-        ...filter
-      };
+      findOptions = merge(findOptions, filter);
     });
 
     //RUN filters
@@ -182,10 +176,10 @@ export abstract class BaseCrudService<T> {
         const filterInstance = new filterClass(key);
 
         if (listRequestDto.filters?.has(key)) {
-          findOptions = {
-            ...findOptions,
-            ...filterInstance.filter(listRequestDto.filters.get(key))
-          };
+          findOptions = merge(
+            findOptions,
+            filterInstance.filter(listRequestDto.filters.get(key))
+          );
         }
       });
 
