@@ -14,8 +14,8 @@ import { ConfigService } from '@nestjs/config';
         port: configService.getOrThrow('POSTGRES_PORT'),
         host: configService.getOrThrow('POSTGRES_HOST'),
         autoLoadEntities: true,
-        logging: true,
-        synchronize: true
+        logging: process.env.NODE_ENV !== 'production',
+        synchronize: false
       })
     })
   ]
