@@ -21,9 +21,9 @@ export class MessagesController {
   @Get()
   public list(@Query() queryParams: ListRequestDto) {
     const filters: Record<string, typeof BaseFilter> = {
-      'message-status': MessageStatusFilter,
-      'by-sender': BySenderFilter,
-      'for-recipient': ForRecipientFilter
+      status: MessageStatusFilter,
+      sender: BySenderFilter,
+      recipient: ForRecipientFilter
     };
 
     return this.messagesService.setFilters(filters).list(queryParams);

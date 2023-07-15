@@ -21,5 +21,5 @@ export class FindRequestDto {
       'filters[message-status]': 'read'
     }
   })
-  filters?: Map<string, any>;
+  filter?: Map<string, any>;
 }

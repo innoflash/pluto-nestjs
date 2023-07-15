@@ -54,6 +54,8 @@ export abstract class BaseCrudService<T> {
       new LimitingFilter().filter(listRequestDto)
     ].forEach(filter => (findManyOptions = merge(findManyOptions, filter)));
 
+    console.log(findManyOptions);
+
     // Whether or not to paginate or not.
     if (!listRequestDto.limit && !listRequestDto.page) {
       if ('skip' in findManyOptions) delete findManyOptions.skip;
@@ -141,10 +143,10 @@ export abstract class BaseCrudService<T> {
       // @ts-ignore
       const filterInstance = new filterClass(key);
 
-      if (listRequestDto.filters?.has(key)) {
+      if (listRequestDto.filter?.has(key)) {
         findOptions = merge(
           findOptions,
-          filterInstance.filter(listRequestDto.filters.get(key))
+          filterInstance.filter(listRequestDto.filter.get(key))
         );
       }
     });
