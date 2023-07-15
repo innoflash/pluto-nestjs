@@ -2,10 +2,18 @@ import { BaseFilter } from '../base-filter';
 import { FindOneOptions } from 'typeorm';
 
 export class FindByIdFilter extends BaseFilter {
-  public filter(id: number | string, key = 'id'): FindOneOptions {
+  private key = 'id';
+
+  public setKey(key: string): FindByIdFilter {
+    this.key = key;
+
+    return this;
+  }
+
+  public filterConditions(id: number | string): FindOneOptions {
     return {
       where: {
-        [key]: id
+        [this.key]: id
       }
     };
   }

@@ -2,7 +2,10 @@ import { BaseFilter } from '../base-filter';
 import { FindManyOptions } from 'typeorm';
 
 export class OrderingFilter extends BaseFilter {
-  public filter(value: { order?: string; orderBy?: string }): FindManyOptions {
+  public filterConditions(value: {
+    order?: string;
+    orderBy?: string;
+  }): FindManyOptions {
     return {
       order: {
         [value.orderBy || 'id']: value.order || 'asc'

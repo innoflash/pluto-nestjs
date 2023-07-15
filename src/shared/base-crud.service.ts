@@ -6,12 +6,10 @@ import { OrderingFilter } from './filters/ordering.filter';
 import { LimitingFilter } from './filters/limiting.filter';
 import { FindRequestDto } from './dto/find-request.dto';
 import { FindByIdFilter } from './filters/find-by-id.filter';
-import { AuthorizeFilter } from './types/authorize-filter';
 import merge from 'lodash.merge';
 
 export abstract class BaseCrudService<T> {
   private filters: Record<string, typeof BaseFilter> = {};
-  private authorizeFilterOptions: AuthorizeFilter<any> = {};
 
   /* The `protected abstract getRepository(): Repository<T>` method is a placeholder method that needs
   to be implemented by the child classes that extend the `BaseCrudService` class. It is used to
@@ -33,23 +31,6 @@ export abstract class BaseCrudService<T> {
     filters: Record<string, typeof BaseFilter>
   ): BaseCrudService<T> {
     this.filters = filters;
-
-    return this;
-  }
-
-  /**
-   * The `authorizeFilters` function sets the authorize filter options for a CRUD service and returns the
-   * service itself.
-   * @example { 'by-user' : true'}
-   * @example { 'by-user': () => false}
-   * @param authorizeFilterOptions - The `authorizeFilterOptions` parameter is of type `AuthorizeFilter`
-   * and accepts a value that is one of the keys of the `filters` property of the current object.
-   * @returns The method `authorizeFilters` is returning an instance of `BaseCrudService<T>`.
-   */
-  public authorizeFilters(
-    authorizeFilterOptions: AuthorizeFilter<keyof typeof this.filters>
-  ): BaseCrudService<T> {
-    this.authorizeFilterOptions = authorizeFilterOptions;
 
     return this;
   }
@@ -125,7 +106,7 @@ export abstract class BaseCrudService<T> {
 
     findOneOptions = merge(
       findOneOptions,
-      new FindByIdFilter().filter(id, key)
+      new FindByIdFilter().setKey(key).filter(id)
     );
 
     return this.getRepository().findOne(findOneOptions);
@@ -155,32 +136,18 @@ export abstract class BaseCrudService<T> {
     });
 
     //RUN filters
-    Object.entries(this.filters)
-      .filter(([key]) => {
-        if (Object.keys(this.authorizeFilterOptions).includes(key)) {
-          if (typeof this.authorizeFilterOptions[key] === 'function') {
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
-            return this.authorizeFilterOptions[key]();
-          }
+    Object.entries(this.filters).forEach(([key, filterClass]) => {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const filterInstance = new filterClass(key);
 
-          return this.authorizeFilterOptions[key];
-        }
-
-        return true;
-      })
-      .forEach(([key, filterClass]) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const filterInstance = new filterClass(key);
-
-        if (listRequestDto.filters?.has(key)) {
-          findOptions = merge(
-            findOptions,
-            filterInstance.filter(listRequestDto.filters.get(key))
-          );
-        }
-      });
+      if (listRequestDto.filters?.has(key)) {
+        findOptions = merge(
+          findOptions,
+          filterInstance.filter(listRequestDto.filters.get(key))
+        );
+      }
+    });
 
     return findOptions;
   }

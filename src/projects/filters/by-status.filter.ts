@@ -3,7 +3,9 @@ import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { ProjectStatus } from '../project-status';
 
 export class ByStatusFilter extends BaseFilter {
-  public filter(status: ProjectStatus): FindManyOptions | FindOneOptions {
+  protected filterConditions(
+    status: ProjectStatus
+  ): FindManyOptions | FindOneOptions {
     return {
       where: { status }
     };

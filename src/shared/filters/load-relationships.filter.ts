@@ -2,7 +2,9 @@ import { BaseFilter } from '../base-filter';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
 
 export class LoadRelationshipsFilter extends BaseFilter {
-  public filter(value?: Array<string>): FindManyOptions | FindOneOptions {
+  public filterConditions(
+    value?: Array<string>
+  ): FindManyOptions | FindOneOptions {
     if (value) {
       return {
         relations: this.resolveRelations(value)

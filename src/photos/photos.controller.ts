@@ -16,9 +16,6 @@ export class PhotosController {
       .setFilters({
         'by-user': ByUserIdFilter
       })
-      .authorizeFilters({
-        'by-user': true
-      })
       .list(queryParams);
   }
 }
