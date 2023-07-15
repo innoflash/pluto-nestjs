@@ -3,6 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { BoardMessagesService } from './board-messages.service';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
+import { MessageTypeFilter } from './filters/message-type.filter';
 
 @Controller('board-messages')
 @ApiTags('Messages')
@@ -11,7 +12,11 @@ export class BoardMessagesController {
 
   @Get()
   public list(@Query() queryParams: ListRequestDto) {
-    return this.messagesService.list(queryParams);
+    return this.messagesService
+      .setFilters({
+        type: MessageTypeFilter
+      })
+      .list(queryParams);
   }
 
   @Get(':id')
