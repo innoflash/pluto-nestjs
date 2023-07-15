@@ -11,6 +11,7 @@ import { SocialMediaModule } from './social-media/social-media.module';
 import { TestimoniesModule } from './testimonies/testimonies.module';
 import { UsersSubscriber } from './users/users-subscriber';
 import { SharedModule } from './shared/shared.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,9 +29,6 @@ import { SharedModule } from './shared/shared.module';
     SharedModule
   ],
   controllers: [],
-  providers: [
-    UsersSubscriber
-  ]
+  providers: [UsersSubscriber]
 })
-export class AppModule {
-}
+export class AppModule {}
