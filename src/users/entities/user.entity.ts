@@ -37,7 +37,7 @@ export class User extends AbstractBaseEntity<User> {
   @ManyToMany(() => Role, role => role.users)
   roles: Role[];
 
-  @OneToOne(() => User, user => user.profile)
+  @OneToOne(() => Profile, profile => profile.user)
   profile: Profile;
 
   @OneToOne(() => Rating, rating => rating.user)
