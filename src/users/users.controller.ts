@@ -1,7 +1,8 @@
-import { Controller, Get, Query } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
+import { FindRequestDto } from '../shared/dto/find-request.dto';
 
 @Controller('users')
 @ApiTags('Users')
@@ -11,5 +12,13 @@ export class UsersController {
   @Get('')
   public list(@Query() queryParams: ListRequestDto) {
     return this.usersService.list(queryParams);
+  }
+
+  @Get(':id')
+  public findOne(
+    @Param('id', ParseIntPipe) id: number,
+    @Query() queryParams: FindRequestDto
+  ) {
+    return this.usersService.find(id, queryParams);
   }
 }
