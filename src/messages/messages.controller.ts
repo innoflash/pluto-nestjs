@@ -7,15 +7,16 @@ import {
   Query,
   UseInterceptors
 } from '@nestjs/common';
-import { MessagesService } from './messages.service';
-import { MessageStatusFilter } from './filters/message-status.filter';
-import { BaseFilter } from '../shared/base-filter';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { MessageListingDto } from './responses/message-listing.dto';
-import { ListRequestDto } from '../shared/dto/list-request.dto';
+import { BaseFilter } from '../shared/base-filter';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
+import { ListRequestDto } from '../shared/dto/list-request.dto';
 import { BySenderFilter } from './filters/by-sender.filter';
 import { ForRecipientFilter } from './filters/for-recipient.filter';
+import { MessageStatusFilter } from './filters/message-status.filter';
+import { MessagesService } from './messages.service';
+import { RecipientRelationPolicy } from './policies/recipient.relation.policy';
+import { MessageListingDto } from './responses/message-listing.dto';
 
 @Controller('messages')
 @ApiTags('Messages')
@@ -35,7 +36,12 @@ export class MessagesController {
       recipient: ForRecipientFilter
     };
 
-    return this.messagesService.setFilters(filters).list(queryParams);
+    return this.messagesService
+      .setFilters(filters)
+      .setRelationsPolicies({
+        'recipient.profile': RecipientRelationPolicy
+      })
+      .list(queryParams);
   }
 
   @ApiOperation({

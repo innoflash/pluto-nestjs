@@ -64,6 +64,8 @@ export abstract class BaseCrudService<T> {
       new LimitingFilter().filter(listRequestDto)
     ].forEach(filter => (findManyOptions = merge(findManyOptions, filter)));
 
+    console.log(findManyOptions);
+
     // Whether or not to paginate or not.
     if (!listRequestDto.limit && !listRequestDto.page) {
       if ('skip' in findManyOptions) delete findManyOptions.skip;
@@ -137,22 +139,29 @@ export abstract class BaseCrudService<T> {
       relationLoadStrategy: 'query'
     };
 
-    const authorizedRelations: Array<string> = [];
+    const authorizedRelations: Array<string> = (
+      listRequestDto.include || []
+    ).filter(relation => {
+      return !Object.keys(this.relationsPolicies).includes(relation);
+    });
 
     //AUTHORIZE LOADING OF RELATIONS
-    Object.entries(this.relationsPolicies).forEach(([relation, policy]) => {
-      if (listRequestDto.include.includes(relation)) {
+    Object.entries(this.relationsPolicies)
+      .filter(([key]) => {
+        return (listRequestDto.include || []).includes(key);
+      })
+      .forEach(([relation, policy]) => {
+        console.log(relation);
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
-        const relationPolicy = new policy(relation);
+        const relationPolicy = new policy();
 
-        if (!relationPolicy.authorizeRelation(relation)) {
-          return;
+        if (relationPolicy.authorizeRelation(relation)) {
+          authorizedRelations.push(relation);
         }
-      }
+      });
 
-      authorizedRelations.push(relation);
-    });
+    console.log(authorizedRelations);
 
     const defaultFilters = [
       new LoadRelationshipsFilter().filter(authorizedRelations, true)

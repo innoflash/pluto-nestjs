@@ -5,7 +5,7 @@ export abstract class BaseRelationPolicy {
 
   public authorizeRelation(
     relation: string,
-    errorOnAuthorizationFailure: boolean
+    errorOnAuthorizationFailure = true
   ) {
     if (this.handleAuthorization(relation)) {
       return true;
@@ -13,7 +13,7 @@ export abstract class BaseRelationPolicy {
 
     if (errorOnAuthorizationFailure) {
       throw new ForbiddenException(
-        `You are not allowed to load the relation named "${relation}"`
+        `You are not allowed to load the relation named ${relation}.`
       );
     }
 
