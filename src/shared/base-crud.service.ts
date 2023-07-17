@@ -1,15 +1,17 @@
-import { BaseFilter } from './base-filter';
+import merge from 'lodash.merge';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
+import { BaseFilter } from './base-filter';
+import { BaseRelationPolicy } from './base-relation.policy';
+import { FindRequestDto } from './dto/find-request.dto';
 import { ListRequestDto } from './dto/list-request.dto';
+import { FindByIdFilter } from './filters/find-by-id.filter';
+import { LimitingFilter } from './filters/limiting.filter';
 import { LoadRelationshipsFilter } from './filters/load-relationships.filter';
 import { OrderingFilter } from './filters/ordering.filter';
-import { LimitingFilter } from './filters/limiting.filter';
-import { FindRequestDto } from './dto/find-request.dto';
-import { FindByIdFilter } from './filters/find-by-id.filter';
-import merge from 'lodash.merge';
 
 export abstract class BaseCrudService<T> {
   private filters: Record<string, typeof BaseFilter> = {};
+  private relationsPolicies: Record<string, typeof BaseRelationPolicy> = {};
 
   /* The `protected abstract getRepository(): Repository<T>` method is a placeholder method that needs
   to be implemented by the child classes that extend the `BaseCrudService` class. It is used to
@@ -31,6 +33,14 @@ export abstract class BaseCrudService<T> {
     filters: Record<string, typeof BaseFilter>
   ): BaseCrudService<T> {
     this.filters = filters;
+
+    return this;
+  }
+
+  public setRelationsPolicies(
+    relationsPolicies: Record<string, typeof BaseRelationPolicy>
+  ) {
+    this.relationsPolicies = relationsPolicies;
 
     return this;
   }
@@ -127,8 +137,25 @@ export abstract class BaseCrudService<T> {
       relationLoadStrategy: 'query'
     };
 
+    const authorizedRelations: Array<string> = [];
+
+    //AUTHORIZE LOADING OF RELATIONS
+    Object.entries(this.relationsPolicies).forEach(([relation, policy]) => {
+      if (listRequestDto.include.includes(relation)) {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const relationPolicy = new policy(relation);
+
+        if (!relationPolicy.authorizeRelation(relation)) {
+          return;
+        }
+      }
+
+      authorizedRelations.push(relation);
+    });
+
     const defaultFilters = [
-      new LoadRelationshipsFilter().filter(listRequestDto.include, true)
+      new LoadRelationshipsFilter().filter(authorizedRelations, true)
     ];
 
     defaultFilters.forEach(filter => {
