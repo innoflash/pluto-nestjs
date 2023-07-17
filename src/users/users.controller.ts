@@ -4,6 +4,7 @@ import { UsersService } from './users.service';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
 import { RoleFilter } from './filters/role.filter';
+import { ProjectFilter } from './filters/project.filter';
 
 @Controller('users')
 @ApiTags('Users')
@@ -14,7 +15,8 @@ export class UsersController {
   public list(@Query() queryParams: ListRequestDto) {
     return this.usersService
       .setFilters({
-        role: RoleFilter
+        role: RoleFilter,
+        project: ProjectFilter
       })
       .list(queryParams);
   }

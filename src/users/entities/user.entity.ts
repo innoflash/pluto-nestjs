@@ -16,6 +16,7 @@ import { Task } from '../../tasks/entities/task.entity';
 import { Message } from '../../messages/entities/message.entity';
 import { BoardMessage } from '../../messages/entities/board-message.entity';
 import { Project } from '../../projects/entities/project.entity';
+import { Exclude } from 'class-transformer';
 
 @Entity('users')
 export class User extends AbstractBaseEntity<User> {
@@ -23,6 +24,7 @@ export class User extends AbstractBaseEntity<User> {
   email: string;
 
   @Column()
+  @Exclude()
   password: string;
 
   @Column()
