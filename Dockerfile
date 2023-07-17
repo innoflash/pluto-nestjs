@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . .
 
-RUN sed -i 's/localhost/postgres/g'" ./app/.env
+RUN sed -i 's/localhost/0.0.0.0/g'" ./app/.env
 RUN npm run build
 RUN npm run migration:run
 RUN npm run migrate:seed
