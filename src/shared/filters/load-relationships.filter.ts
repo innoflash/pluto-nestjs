@@ -11,7 +11,7 @@ export class LoadRelationshipsFilter extends BaseFilter {
       };
     }
     return {
-      loadRelationIds: true
+      //loadRelationIds: true
     };
   }
 
