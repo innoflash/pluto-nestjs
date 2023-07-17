@@ -3,7 +3,7 @@ import { UserRole } from '../user-role';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { UnprocessableEntityException } from '@nestjs/common';
 
-export class RoleFilter extends BaseFilter {
+export class RoleQueryFilter extends BaseFilter {
   protected filterConditions(
     roleName: UserRole
   ): FindManyOptions | FindOneOptions {

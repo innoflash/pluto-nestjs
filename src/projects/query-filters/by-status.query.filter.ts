@@ -1,13 +1,13 @@
 import { BaseFilter } from '../../shared/base-filter';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
-import { BoardType } from '../enums/board-type';
+import { ProjectStatus } from '../project-status';
 
-export class MessageTypeFilter extends BaseFilter {
+export class ByStatusQueryFilter extends BaseFilter {
   protected filterConditions(
-    type: BoardType
+    status: ProjectStatus
   ): FindManyOptions | FindOneOptions {
     return {
-      where: { type }
+      where: { status }
     };
   }
 }

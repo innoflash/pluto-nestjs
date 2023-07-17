@@ -1,7 +1,7 @@
 import { BaseFilter } from '../base-filter';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
 
-export class LoadRelationshipsFilter extends BaseFilter {
+export class LoadRelationshipsQueryFilter extends BaseFilter {
   public filterConditions(
     value?: Array<string>
   ): FindManyOptions | FindOneOptions {

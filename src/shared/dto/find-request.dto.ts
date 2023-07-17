@@ -15,7 +15,7 @@ export class FindRequestDto {
   @Type(() => String)
   //@Transform(value => value.value.toString().split(','))
   @ApiPropertyOptional({
-    description: 'The filters you want to apply',
+    description: 'The query-query-query-query-filters you want to apply',
     type: 'object',
     example: {
       'filters[message-status]': 'read'

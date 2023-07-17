@@ -10,8 +10,8 @@ import {
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ProjectsService } from './projects.service';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
-import { ByStatusFilter } from './filters/by-status.filter';
-import { ForUserFilter } from './filters/for-user.filter';
+import { ByStatusQueryFilter } from './query-filters/by-status.query.filter';
+import { ForUserQueryFilter } from './query-filters/for-user.query.filter';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
 
 @Controller('projects')
@@ -24,8 +24,8 @@ export class ProjectsController {
   @ApiOperation({ summary: 'Lists the projects' })
   public list(@Query() listRequestDto: ListRequestDto) {
     const filters = {
-      status: ByStatusFilter,
-      'for-user': ForUserFilter
+      status: ByStatusQueryFilter,
+      'for-user': ForUserQueryFilter
     };
 
     return this.projectsService.setFilters(filters).list(listRequestDto);

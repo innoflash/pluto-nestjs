@@ -8,7 +8,7 @@ import {
 import { PhotosService } from './photos.service';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { ByUserIdFilter } from '../shared/filters/by-user-id.filter';
+import { ByUserIdQueryFilter } from '../shared/query-filters/by-user-id.query.filter';
 
 @Controller('photos')
 @ApiTags('Photos')
@@ -21,7 +21,7 @@ export class PhotosController {
   public list(@Query() queryParams: ListRequestDto) {
     return this.photosService
       .setFilters({
-        'by-user': ByUserIdFilter
+        'by-user': ByUserIdQueryFilter
       })
       .list(queryParams);
   }

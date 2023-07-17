@@ -4,10 +4,10 @@ import { BaseFilter } from './base-filter';
 import { BaseRelationPolicy } from './base-relation.policy';
 import { FindRequestDto } from './dto/find-request.dto';
 import { ListRequestDto } from './dto/list-request.dto';
-import { FindByIdFilter } from './filters/find-by-id.filter';
-import { LimitingFilter } from './filters/limiting.filter';
-import { LoadRelationshipsFilter } from './filters/load-relationships.filter';
-import { OrderingFilter } from './filters/ordering.filter';
+import { FindByIdQueryFilter } from './query-filters/find-by-id.query.filter';
+import { LimitingQueryFilter } from './query-filters/limiting.query.filter';
+import { LoadRelationshipsQueryFilter } from './query-filters/load-relationships.query.filter';
+import { OrderingQueryFilter } from './query-filters/ordering.query.filter';
 
 export abstract class BaseCrudService<T> {
   private filters: Record<string, typeof BaseFilter> = {};
@@ -23,9 +23,9 @@ export abstract class BaseCrudService<T> {
   protected abstract getRepository(): Repository<T>;
 
   /**
-   * The function `setFilters` sets the filters for a CRUD service and returns the service itself.
+   * The function `setFilters` sets the query-query-query-query-filters for a CRUD service and returns the service itself.
    * @example {'by-user': ByUserFilter }
-   * @param filters - The `filters` parameter is an object that maps string keys to the type of
+   * @param filters - The `query-query-query-query-filters` parameter is an object that maps string keys to the type of
    * `BaseFilter`.
    * @returns The method is returning an instance of the BaseCrudService class.
    */
@@ -60,8 +60,8 @@ export abstract class BaseCrudService<T> {
     let findManyOptions = this.findOptions(listRequestDto) as FindManyOptions;
 
     [
-      new OrderingFilter().filter(listRequestDto),
-      new LimitingFilter().filter(listRequestDto)
+      new OrderingQueryFilter().filter(listRequestDto),
+      new LimitingQueryFilter().filter(listRequestDto)
     ].forEach(filter => (findManyOptions = merge(findManyOptions, filter)));
 
     console.log(findManyOptions);
@@ -118,7 +118,7 @@ export abstract class BaseCrudService<T> {
 
     findOneOptions = merge(
       findOneOptions,
-      new FindByIdFilter().setKey(key).filter(id)
+      new FindByIdQueryFilter().setKey(key).filter(id)
     );
 
     return this.getRepository().findOne(findOneOptions);
@@ -126,9 +126,9 @@ export abstract class BaseCrudService<T> {
 
   /**
    * The function `findOptions` takes a `listRequestDto` object and returns a `FindManyOptions` or
-   * `FindOneOptions` object based on the provided filters and include options.
+   * `FindOneOptions` object based on the provided query-query-query-query-filters and include options.
    * @param {FindRequestDto} listRequestDto - The `listRequestDto` parameter is an object of type
-   * `FindRequestDto`. It contains information about the request for finding data, such as filters,
+   * `FindRequestDto`. It contains information about the request for finding data, such as query-query-query-query-filters,
    * includes, and other options.
    * @returns a variable of type `FindManyOptions<T> | FindOneOptions<T>`.
    */
@@ -164,14 +164,14 @@ export abstract class BaseCrudService<T> {
     console.log(authorizedRelations);
 
     const defaultFilters = [
-      new LoadRelationshipsFilter().filter(authorizedRelations, true)
+      new LoadRelationshipsQueryFilter().filter(authorizedRelations, true)
     ];
 
     defaultFilters.forEach(filter => {
       findOptions = merge(findOptions, filter);
     });
 
-    //RUN filters
+    //RUN query-query-query-query-filters
     Object.entries(this.filters).forEach(([key, filterClass]) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore

@@ -1,10 +1,10 @@
 import { BaseFilter } from '../base-filter';
 import { FindOneOptions } from 'typeorm';
 
-export class FindByIdFilter extends BaseFilter {
+export class FindByIdQueryFilter extends BaseFilter {
   private key = 'id';
 
-  public setKey(key: string): FindByIdFilter {
+  public setKey(key: string): FindByIdQueryFilter {
     this.key = key;
 
     return this;

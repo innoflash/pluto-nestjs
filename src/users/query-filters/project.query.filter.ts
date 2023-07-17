@@ -1,13 +1,16 @@
 import { BaseFilter } from '../../shared/base-filter';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
-import { ProjectStatus } from '../project-status';
 
-export class ByStatusFilter extends BaseFilter {
+export class ProjectQueryFilter extends BaseFilter {
   protected filterConditions(
-    status: ProjectStatus
+    projectId: number
   ): FindManyOptions | FindOneOptions {
     return {
-      where: { status }
+      where: {
+        projects: {
+          id: projectId
+        }
+      }
     };
   }
 }

@@ -1,7 +1,7 @@
 import { BaseFilter } from '../../shared/base-filter';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
 
-export class ForUserFilter extends BaseFilter {
+export class ForUserQueryFilter extends BaseFilter {
   protected filterConditions(userId: number): FindManyOptions | FindOneOptions {
     return {
       where: {
