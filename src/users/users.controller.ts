@@ -23,7 +23,7 @@ export class UsersController {
   @Get('')
   public list(@Query() queryParams: ListRequestDto) {
     return this.usersService
-      .setFilters({
+      .setQueryFilters({
         role: RoleQueryFilter,
         project: ProjectQueryFilter
       })

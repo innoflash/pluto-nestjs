@@ -10,7 +10,7 @@ import { LoadRelationshipsQueryFilter } from './query-filters/load-relationships
 import { OrderingQueryFilter } from './query-filters/ordering.query.filter';
 
 export abstract class BaseCrudService<T> {
-  private filters: Record<string, typeof BaseFilter> = {};
+  private queryFilters: Record<string, typeof BaseFilter> = {};
   private relationsPolicies: Record<string, typeof BaseRelationPolicy> = {};
 
   /* The `protected abstract getRepository(): Repository<T>` method is a placeholder method that needs
@@ -23,16 +23,16 @@ export abstract class BaseCrudService<T> {
   protected abstract getRepository(): Repository<T>;
 
   /**
-   * The function `setFilters` sets the query-query-query-query-filters for a CRUD service and returns the service itself.
+   * The function `setFilters` sets the query-query-query-query-queryFilters for a CRUD service and returns the service itself.
    * @example {'by-user': ByUserFilter }
-   * @param filters - The `query-query-query-query-filters` parameter is an object that maps string keys to the type of
+   * @param queryFilters - The `query-query-query-query-queryFilters` parameter is an object that maps string keys to the type of
    * `BaseFilter`.
    * @returns The method is returning an instance of the BaseCrudService class.
    */
-  public setFilters(
-    filters: Record<string, typeof BaseFilter>
+  public setQueryFilters(
+    queryFilters: Record<string, typeof BaseFilter>
   ): BaseCrudService<T> {
-    this.filters = filters;
+    this.queryFilters = queryFilters;
 
     return this;
   }
@@ -126,9 +126,9 @@ export abstract class BaseCrudService<T> {
 
   /**
    * The function `findOptions` takes a `listRequestDto` object and returns a `FindManyOptions` or
-   * `FindOneOptions` object based on the provided query-query-query-query-filters and include options.
+   * `FindOneOptions` object based on the provided query-query-query-query-queryFilters and include options.
    * @param {FindRequestDto} listRequestDto - The `listRequestDto` parameter is an object of type
-   * `FindRequestDto`. It contains information about the request for finding data, such as query-query-query-query-filters,
+   * `FindRequestDto`. It contains information about the request for finding data, such as query-query-query-query-queryFilters,
    * includes, and other options.
    * @returns a variable of type `FindManyOptions<T> | FindOneOptions<T>`.
    */
@@ -171,8 +171,8 @@ export abstract class BaseCrudService<T> {
       findOptions = merge(findOptions, filter);
     });
 
-    //RUN query-query-query-query-filters
-    Object.entries(this.filters).forEach(([key, filterClass]) => {
+    //RUN query-query-query-query-queryFilters
+    Object.entries(this.queryFilters).forEach(([key, filterClass]) => {
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const filterInstance = new filterClass(key);

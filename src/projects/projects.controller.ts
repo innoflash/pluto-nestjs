@@ -28,7 +28,7 @@ export class ProjectsController {
       'for-user': ForUserQueryFilter
     };
 
-    return this.projectsService.setFilters(filters).list(listRequestDto);
+    return this.projectsService.setQueryFilters(filters).list(listRequestDto);
   }
 
   @Get(':id')

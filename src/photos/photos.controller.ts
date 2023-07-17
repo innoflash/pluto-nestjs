@@ -20,7 +20,7 @@ export class PhotosController {
   @Get()
   public list(@Query() queryParams: ListRequestDto) {
     return this.photosService
-      .setFilters({
+      .setQueryFilters({
         'by-user': ByUserIdQueryFilter
       })
       .list(queryParams);

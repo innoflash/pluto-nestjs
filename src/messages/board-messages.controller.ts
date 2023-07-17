@@ -22,7 +22,7 @@ export class BoardMessagesController {
   @Get()
   public list(@Query() queryParams: ListRequestDto) {
     return this.messagesService
-      .setFilters({
+      .setQueryFilters({
         type: MessageTypeQueryFilter
       })
       .list(queryParams);

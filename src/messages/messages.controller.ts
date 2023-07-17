@@ -37,7 +37,7 @@ export class MessagesController {
     };
 
     return this.messagesService
-      .setFilters(filters)
+      .setQueryFilters(filters)
       .setRelationsPolicies({
         'recipient.profile': RecipientRelationPolicy
       })
