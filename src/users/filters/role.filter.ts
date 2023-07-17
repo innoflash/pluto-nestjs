@@ -18,7 +18,7 @@ export class RoleFilter extends BaseFilter {
     }
 
     return {
-      relations: {
+      where: {
         roles: {
           name: roleName
         }
