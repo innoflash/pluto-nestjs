@@ -8,7 +8,13 @@ export class RoleFilter extends BaseFilter {
     roleName: UserRole
   ): FindManyOptions | FindOneOptions {
     if (!Object.values(UserRole).includes(roleName)) {
-      throw new UnprocessableEntityException('The role provided is in valid');
+      throw new UnprocessableEntityException([
+        `The role provided is in valid, it has to be one of ${Object.keys(
+          UserRole
+        )
+          .map(role => role.toLowerCase())
+          .join(', ')}`
+      ]);
     }
 
     return {

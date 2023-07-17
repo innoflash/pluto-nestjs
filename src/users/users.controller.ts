@@ -3,6 +3,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { UsersService } from './users.service';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
+import { RoleFilter } from './filters/role.filter';
 
 @Controller('users')
 @ApiTags('Users')
@@ -11,7 +12,11 @@ export class UsersController {
 
   @Get('')
   public list(@Query() queryParams: ListRequestDto) {
-    return this.usersService.list(queryParams);
+    return this.usersService
+      .setFilters({
+        role: RoleFilter
+      })
+      .list(queryParams);
   }
 
   @Get(':id')
