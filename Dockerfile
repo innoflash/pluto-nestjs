@@ -8,12 +8,12 @@ RUN npm install
 
 COPY . .
 
+RUN sed -i 's/localhost/postgres/g'" ./app/.env
 RUN npm run build
+RUN npm run migration:run
+RUN npm run migrate:seed
 
 #sed -i s/localhost/postgres/g .env
-CMD ["sed", "-i", "'s/localhost/postgres/g'", "./app/env"]
-CMD ["npm", "run", "migration:run"]
-CMD ["npm", "run", "migrate:seed"]
 CMD ["npm", "run", "start:dev"]
 
 FROM node:16-alpine as production
