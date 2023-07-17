@@ -1,4 +1,12 @@
-import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Query,
+  UseInterceptors
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { BoardMessagesService } from './board-messages.service';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
@@ -7,6 +15,7 @@ import { MessageTypeFilter } from './filters/message-type.filter';
 
 @Controller('board-messages')
 @ApiTags('Messages')
+@UseInterceptors(ClassSerializerInterceptor)
 export class BoardMessagesController {
   public constructor(private readonly messagesService: BoardMessagesService) {}
 

@@ -128,7 +128,7 @@ export abstract class BaseCrudService<T> {
     };
 
     const defaultFilters = [
-      new LoadRelationshipsFilter().filter(listRequestDto.include)
+      new LoadRelationshipsFilter().filter(listRequestDto.include, true)
     ];
 
     defaultFilters.forEach(filter => {

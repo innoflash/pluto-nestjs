@@ -1,4 +1,12 @@
-import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Query,
+  UseInterceptors
+} from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { MessageStatusFilter } from './filters/message-status.filter';
 import { BaseFilter } from '../shared/base-filter';
@@ -11,6 +19,7 @@ import { ForRecipientFilter } from './filters/for-recipient.filter';
 
 @Controller('messages')
 @ApiTags('Messages')
+@UseInterceptors(ClassSerializerInterceptor)
 export class MessagesController {
   public constructor(private readonly messagesService: MessagesService) {}
 

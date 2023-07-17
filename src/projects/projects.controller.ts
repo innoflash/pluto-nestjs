@@ -1,4 +1,12 @@
-import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
+import {
+  ClassSerializerInterceptor,
+  Controller,
+  Get,
+  Param,
+  ParseIntPipe,
+  Query,
+  UseInterceptors
+} from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { ProjectsService } from './projects.service';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
@@ -8,6 +16,7 @@ import { FindRequestDto } from '../shared/dto/find-request.dto';
 
 @Controller('projects')
 @ApiTags('Projects')
+@UseInterceptors(ClassSerializerInterceptor)
 export class ProjectsController {
   public constructor(private readonly projectsService: ProjectsService) {}
 
