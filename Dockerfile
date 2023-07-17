@@ -8,7 +8,9 @@ RUN npm install
 
 COPY . .
 
-RUN sed -i 's/localhost/0.0.0.0/g'" ./app/.env
+RUN ls -a
+RUN sed -i 's/localhost/0.0.0.0/g' ./.env
+RUN cat .env
 RUN npm run build
 RUN npm run migration:run
 RUN npm run migrate:seed
