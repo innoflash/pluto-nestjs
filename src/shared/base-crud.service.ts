@@ -139,8 +139,6 @@ export abstract class BaseCrudService<T> {
       relationLoadStrategy: 'query'
     };
 
-    console.log('Some change');
-
     const authorizedRelations: Array<string> = (
       listRequestDto.include || []
     ).filter(relation => {
@@ -162,8 +160,6 @@ export abstract class BaseCrudService<T> {
           authorizedRelations.push(relation);
         }
       });
-
-    console.log(authorizedRelations);
 
     const defaultFilters = [
       new LoadRelationshipsQueryFilter().filter(authorizedRelations, true)
