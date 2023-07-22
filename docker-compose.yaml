@@ -1,20 +1,20 @@
 version: "3"
 
 services:
-#  backend:
-#    build:
-#      context: .
-#      target: development
-#    env_file:
-#      - .env
-#    depends_on:
-#      - postgres
-#    ports:
-#      - '3000:3000'
-#    command:
-#      - npm run migration:run
-#      - npm run migrate:seed
-#     - npm run start:dev
+  #  backend:
+  #    build:
+  #      context: .
+  #      target: development
+  #    env_file:
+  #      - .env
+  #    depends_on:
+  #      - postgres
+  #    ports:
+  #      - '3000:3000'
+  #    command:
+  #      - npm run migration:run
+  #      - npm run migrate:seed
+  #     - npm run start:dev
 
   postgres:
     image: postgres
@@ -22,4 +22,5 @@ services:
       - .env
     ports:
       - "5432:5432"
-    stdin_open: false
+    volumes:
+      - ./data:/var/lib/postgresql/data
