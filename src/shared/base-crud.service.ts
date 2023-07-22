@@ -1,4 +1,4 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { Injectable, Scope, UnauthorizedException } from '@nestjs/common';
 import merge from 'lodash.merge';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { BaseFilter } from './base-filter';
@@ -10,6 +10,9 @@ import { LimitingQueryFilter } from './query-filters/limiting.query.filter';
 import { LoadRelationshipsQueryFilter } from './query-filters/load-relationships.query.filter';
 import { OrderingQueryFilter } from './query-filters/ordering.query.filter';
 
+@Injectable({
+  scope: Scope.REQUEST
+})
 export abstract class BaseCrudService<T> {
   private queryFilters: Record<string, typeof BaseFilter> = {};
   private relationsPolicies: Record<
