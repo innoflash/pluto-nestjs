@@ -26,7 +26,8 @@
     "db:create": "ts-node ./node_modules/typeorm-extension/dist/cli/index.js db:create",
     "db:drop": "ts-node ./node_modules/typeorm-extension/dist/cli/index.js db:drop",
     "seed": "ts-node ./node_modules/typeorm-extension/dist/cli/index.js seed",
-    "migrate:seed": "npm run migration:run && npm run seed"
+    "migrate:seed": "npm run migration:run && npm run seed",
+    "docker": "docker-compose down && docker-compose up --build"
   },
   "dependencies": {
     "@nestjs/common": "^10.0.0",

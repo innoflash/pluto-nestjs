@@ -139,6 +139,8 @@ export abstract class BaseCrudService<T> {
       relationLoadStrategy: 'query'
     };
 
+    console.log('Some change');
+
     const authorizedRelations: Array<string> = (
       listRequestDto.include || []
     ).filter(relation => {
