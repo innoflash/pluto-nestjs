@@ -1,27 +1,27 @@
 version: "3"
 
 services:
-  #  backend:
-  #    build:
-  #      context: .
-  #      target: development
-  #    env_file:
-  #      - .env
-  #    depends_on:
-  #      - postgres
-  #    ports:
-  #      - '3000:3000'
-  #    command:
-  #      - npm run migration:run
-  #      - npm run migrate:seed
-  #     - npm run start:dev
+  backend:
+    container_name: backend
+    build:
+      context: .
+      target: development
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    ports:
+      - '3000:3000'
+    volumes:
+      - /app/node_modules
+      - ./src:/app/src
 
   postgres:
     image: postgres
     container_name: pluto-db
     env_file:
       - .env
-    ports:
-      - "5432:5432"
+#    ports:
+#      - "5432:5432"
     volumes:
       - ./data:/var/lib/postgresql/data

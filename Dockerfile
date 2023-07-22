@@ -9,11 +9,11 @@ RUN npm install
 COPY . .
 
 RUN ls -a
-RUN sed -i 's/localhost/0.0.0.0/g' ./.env
+RUN sed -i 's/localhost/postgres/g' ./.env
 RUN cat .env
-RUN npm run build
-RUN npm run migration:run
-RUN npm run migrate:seed
+#RUN npm run build
+#RUN npm run migration:run
+#RUN npm run migrate:seed
 
 #sed -i s/localhost/postgres/g .env
 CMD ["npm", "run", "start:dev"]
