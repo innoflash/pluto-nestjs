@@ -1,4 +1,4 @@
-FROM node:16-alpine as development
+FROM node:18-alpine as development
 
 WORKDIR /app
 
@@ -18,7 +18,7 @@ RUN cat .env
 #sed -i s/localhost/postgres/g .env
 CMD ["npm", "run", "start:dev"]
 
-FROM node:16-alpine as production
+FROM node:18-alpine as production
 
 ARG NODE_ENV=production
 ENV NODE_ENV=${NODE_ENV}
