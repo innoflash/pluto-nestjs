@@ -1,6 +1,8 @@
+import { Injectable } from '@nestjs/common';
 import { BaseQueryFilter } from '../base-query-filter';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
 
+@Injectable()
 export class LoadRelationshipsQueryFilter extends BaseQueryFilter {
   public filterConditions(
     value?: Array<string>
