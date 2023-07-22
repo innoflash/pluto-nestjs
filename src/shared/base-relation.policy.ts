@@ -1,5 +1,8 @@
-import { ForbiddenException } from '@nestjs/common';
+import { ForbiddenException, Injectable, Scope } from '@nestjs/common';
 
+@Injectable({
+  scope: Scope.REQUEST
+})
 export abstract class BaseRelationPolicy {
   protected abstract handleAuthorization(relation: string): boolean;
 
