@@ -1,11 +1,14 @@
 import { Column, CreateDateColumn, Entity, ManyToOne } from 'typeorm';
-import { User } from '../../users/entities/user.entity';
 import { AbstractBaseEntity } from '../../database/abstract-base.entity';
+import { User } from '../../users/entities/user.entity';
 
 @Entity('testimonies')
 export class Testimony extends AbstractBaseEntity<Testimony> {
   @Column({ type: 'text' })
   testimony: string;
+
+  @Column()
+  title: string;
 
   @CreateDateColumn()
   createdAt: Date;
