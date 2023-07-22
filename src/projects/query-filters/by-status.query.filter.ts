@@ -1,8 +1,8 @@
-import { BaseFilter } from '../../shared/base-filter';
+import { BaseQueryFilter } from '../../shared/base-query-filter';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { ProjectStatus } from '../project-status';
 
-export class ByStatusQueryFilter extends BaseFilter {
+export class ByStatusQueryFilter extends BaseQueryFilter {
   protected filterConditions(
     status: ProjectStatus
   ): FindManyOptions | FindOneOptions {

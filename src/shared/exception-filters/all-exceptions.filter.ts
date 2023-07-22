@@ -23,7 +23,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
       statusCode: httpStatus,
       timestamp: new Date().toISOString(),
       path: httpAdapter.getRequestUrl(ctx.getRequest()),
-      message: exception.response.message || exception.response,
+      message:
+        httpStatus === HttpStatus.UNPROCESSABLE_ENTITY
+          ? exception.response.message || exception.response
+          : exception.message,
       errorClass: exception.constructor.name
     };
 

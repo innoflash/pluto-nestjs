@@ -1,9 +1,9 @@
 import { FindManyOptions, FindOneOptions } from 'typeorm';
-import { BaseFilter } from '../../shared/base-filter';
+import { BaseQueryFilter } from '../../shared/base-query-filter';
 import { InvalidRoleException } from '../../shared/exception-filters/invalid-role.exception';
 import { UserRole } from '../user-role';
 
-export class RoleQueryFilter extends BaseFilter {
+export class RoleQueryFilter extends BaseQueryFilter {
   protected filterConditions(
     roleName: UserRole
   ): FindManyOptions | FindOneOptions {

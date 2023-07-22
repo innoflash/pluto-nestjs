@@ -8,7 +8,7 @@ import {
   UseInterceptors
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { BaseFilter } from '../shared/base-filter';
+import { BaseQueryFilter } from '../shared/base-query-filter';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
 import { BySenderQueryFilter } from './query-filters/by-sender.query.filter';
@@ -30,7 +30,7 @@ export class MessagesController {
   })
   @Get()
   public list(@Query() queryParams: ListRequestDto) {
-    const filters: Record<string, typeof BaseFilter> = {
+    const filters: Record<string, typeof BaseQueryFilter> = {
       status: MessageStatusQueryFilter,
       sender: BySenderQueryFilter,
       recipient: ForRecipientQueryFilter

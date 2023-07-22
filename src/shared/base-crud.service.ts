@@ -2,7 +2,7 @@ import { Injectable, Scope, UnauthorizedException } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import merge from 'lodash.merge';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
-import { BaseFilter } from './base-filter';
+import { BaseQueryFilter } from './base-query-filter';
 import { BaseQueryFilterPolicy } from './base-query-filter.policy';
 import { BaseRelationPolicy } from './base-relation.policy';
 import { FindRequestDto } from './dto/find-request.dto';
@@ -16,7 +16,7 @@ import { OrderingQueryFilter } from './query-filters/ordering.query.filter';
   scope: Scope.REQUEST
 })
 export abstract class BaseCrudService<T> {
-  private queryFilters: Record<string, typeof BaseFilter> = {};
+  private queryFilters: Record<string, typeof BaseQueryFilter> = {};
   private relationsPolicies: Record<
     string,
     typeof BaseRelationPolicy | boolean
@@ -47,11 +47,11 @@ export abstract class BaseCrudService<T> {
    * The function `setFilters` sets the query-query-query-query-queryFilters for a CRUD service and returns the service itself.
    * @example {'by-user': ByUserFilter }
    * @param queryFilters - The `query-query-query-query-queryFilters` parameter is an object that maps string keys to the type of
-   * `BaseFilter`.
+   * `BaseQueryFilter`.
    * @returns The method is returning an instance of the BaseCrudService class.
    */
   public setQueryFilters(
-    queryFilters: Record<string, typeof BaseFilter>
+    queryFilters: Record<string, typeof BaseQueryFilter>
   ): BaseCrudService<T> {
     this.queryFilters = queryFilters;
 
@@ -235,7 +235,11 @@ export abstract class BaseCrudService<T> {
       }
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      const filterInstance = new filterClass(key);
+      const filterInstance = (this.moduleRef.get(filterClass, {
+        strict: false
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+      }) || this.moduleRef.create(filterClass)) as BaseQueryFilter;
 
       if (listRequestDto.filter?.has(key)) {
         findOptions = merge(

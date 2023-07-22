@@ -1,7 +1,7 @@
-import { BaseFilter } from '../base-filter';
+import { BaseQueryFilter } from '../base-query-filter';
 import { FindManyOptions } from 'typeorm';
 
-export class LimitingQueryFilter extends BaseFilter {
+export class LimitingQueryFilter extends BaseQueryFilter {
   public filterConditions(value: {
     page?: number;
     limit?: number;

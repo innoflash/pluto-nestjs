@@ -1,7 +1,7 @@
 import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { ForbiddenException } from '@nestjs/common';
 
-export abstract class BaseFilter {
+export abstract class BaseQueryFilter {
   public constructor(protected readonly property?: string) {}
 
   protected abstract filterConditions(
