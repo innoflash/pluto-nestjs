@@ -5,6 +5,7 @@ export default setSeederFactory(
   Testimony,
   faker =>
     new Testimony({
-      testimony: faker.lorem.sentences(2)
+      testimony: faker.lorem.sentences(2),
+      title: faker.lorem.sentence()
     })
 );
