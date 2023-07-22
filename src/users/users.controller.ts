@@ -35,6 +35,6 @@ export class UsersController {
     @Param('id', ParseIntPipe) id: number,
     @Query() queryParams: FindRequestDto
   ) {
-    return this.usersService.find(id, queryParams);
+    return this.usersService.findOne(id, queryParams);
   }
 }

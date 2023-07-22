@@ -52,6 +52,6 @@ export class MessagesController {
     @Param('id', ParseIntPipe) id: number,
     @Query() queryParams: FindRequestDto
   ) {
-    return this.messagesService.find(id, queryParams);
+    return this.messagesService.findOne(id, queryParams);
   }
 }

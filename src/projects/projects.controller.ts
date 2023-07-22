@@ -36,6 +36,6 @@ export class ProjectsController {
     @Param('id', ParseIntPipe) id: number,
     @Query() queryParams: FindRequestDto
   ) {
-    return this.projectsService.find(id, queryParams);
+    return this.projectsService.findOne(id, queryParams);
   }
 }

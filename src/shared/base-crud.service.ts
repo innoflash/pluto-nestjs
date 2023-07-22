@@ -107,7 +107,7 @@ export abstract class BaseCrudService<T> {
    * `id` property. However, you can provide a different property name if needed.
    * @returns The method is returning the result of the `findOne` method call on the repository.
    */
-  public find<T extends FindRequestDto>(
+  public findOne<T extends FindRequestDto>(
     id: number | string,
     findRequestDto?: T,
     key = 'id'
