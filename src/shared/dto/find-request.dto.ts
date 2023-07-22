@@ -5,7 +5,12 @@ import { ApiPropertyOptional } from '@nestjs/swagger';
 export class FindRequestDto {
   @IsOptional()
   @Type(() => String)
-  @Transform(value => value.value.toString().split(','))
+  @Transform(value =>
+    value.value
+      .toString()
+      .split(',')
+      .map((relation: string) => relation.trim())
+  )
   @ApiPropertyOptional({
     description: 'The relationships that you want loaded'
   })
