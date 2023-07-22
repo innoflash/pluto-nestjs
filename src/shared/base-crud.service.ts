@@ -1,3 +1,4 @@
+import { UnauthorizedException } from '@nestjs/common';
 import merge from 'lodash.merge';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { BaseFilter } from './base-filter';
@@ -11,7 +12,10 @@ import { OrderingQueryFilter } from './query-filters/ordering.query.filter';
 
 export abstract class BaseCrudService<T> {
   private queryFilters: Record<string, typeof BaseFilter> = {};
-  private relationsPolicies: Record<string, typeof BaseRelationPolicy> = {};
+  private relationsPolicies: Record<
+    string,
+    typeof BaseRelationPolicy | boolean
+  > = {};
 
   /* The `protected abstract getRepository(): Repository<T>` method is a placeholder method that needs
   to be implemented by the child classes that extend the `BaseCrudService` class. It is used to
@@ -38,7 +42,7 @@ export abstract class BaseCrudService<T> {
   }
 
   public setRelationsPolicies(
-    relationsPolicies: Record<string, typeof BaseRelationPolicy>
+    relationsPolicies: Record<string, typeof BaseRelationPolicy | boolean>
   ) {
     this.relationsPolicies = relationsPolicies;
 
@@ -151,7 +155,14 @@ export abstract class BaseCrudService<T> {
         return (listRequestDto.include || []).includes(key);
       })
       .forEach(([relation, policy]) => {
-        console.log(relation);
+        console.log(relation, 'RELATION', typeof policy);
+        if (typeof policy === 'boolean' && policy) {
+          return authorizedRelations.push(relation);
+        } else {
+          throw new UnauthorizedException(
+            `Forbidden from accessing ${relation}`
+          );
+        }
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         const relationPolicy = new policy();
