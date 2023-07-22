@@ -1,8 +1,9 @@
 import { Injectable, Scope, UnauthorizedException } from '@nestjs/common';
+import { ModuleRef } from '@nestjs/core';
 import merge from 'lodash.merge';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { BaseFilter } from './base-filter';
-import { BaseFilterPolicy } from './base-filter.policy';
+import { BaseQueryFilterPolicy } from './base-query-filter.policy';
 import { BaseRelationPolicy } from './base-relation.policy';
 import { FindRequestDto } from './dto/find-request.dto';
 import { ListRequestDto } from './dto/list-request.dto';
@@ -22,8 +23,16 @@ export abstract class BaseCrudService<T> {
   > = {};
   private queryFilterPolicies: Record<
     string,
-    typeof BaseFilterPolicy | boolean
+    typeof BaseQueryFilterPolicy | boolean
   > = {};
+
+  // private readonly repository: Repository<AbstractBaseEntity<T>>;
+
+  public constructor(
+    protected readonly moduleRef: ModuleRef // @Inject('DATA_SOURCE') private readonly dataSource: DataSource
+  ) {
+    //   this.repository = this.dataSource.getRepository(AbstractBaseEntity<T>);
+  }
 
   /* The `protected abstract getRepository(): Repository<T>` method is a placeholder method that needs
   to be implemented by the child classes that extend the `BaseCrudService` class. It is used to
@@ -50,7 +59,7 @@ export abstract class BaseCrudService<T> {
   }
 
   public setQueryFiltersPolicies(
-    queryFiltersPolicies: Record<string, typeof BaseFilterPolicy | boolean>
+    queryFiltersPolicies: Record<string, typeof BaseQueryFilterPolicy | boolean>
   ): BaseCrudService<T> {
     this.queryFilterPolicies = queryFiltersPolicies;
 
@@ -208,9 +217,19 @@ export abstract class BaseCrudService<T> {
           );
         }
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const queryFilterPolicy = new this.queryFilterPolicies[key]();
+        const queryFilterPolicy = (this.moduleRef.get(
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          //@ts-ignore
+          this.queryFilterPolicies[key],
+          {
+            strict: false
+          }
+        ) ||
+          this.moduleRef.create(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            this.queryFilterPolicies[key]
+          )) as BaseQueryFilterPolicy;
 
         queryFilterPolicy.authorizeFilter(key, listRequestDto.filter.get(key));
       }

@@ -5,11 +5,8 @@ import { TestimoniesController } from './testimonies.controller';
 import { TestimoniesService } from './testimonies.service';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Testimony])
-  ],
+  imports: [TypeOrmModule.forFeature([Testimony])],
   controllers: [TestimoniesController],
   providers: [TestimoniesService]
 })
-export class TestimoniesModule {
-}
+export class TestimoniesModule {}
