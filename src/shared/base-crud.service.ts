@@ -2,6 +2,7 @@ import { Injectable, Scope, UnauthorizedException } from '@nestjs/common';
 import merge from 'lodash.merge';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
 import { BaseFilter } from './base-filter';
+import { BaseFilterPolicy } from './base-filter.policy';
 import { BaseRelationPolicy } from './base-relation.policy';
 import { FindRequestDto } from './dto/find-request.dto';
 import { ListRequestDto } from './dto/list-request.dto';
@@ -18,6 +19,10 @@ export abstract class BaseCrudService<T> {
   private relationsPolicies: Record<
     string,
     typeof BaseRelationPolicy | boolean
+  > = {};
+  private queryFilterPolicies: Record<
+    string,
+    typeof BaseFilterPolicy | boolean
   > = {};
 
   /* The `protected abstract getRepository(): Repository<T>` method is a placeholder method that needs
@@ -40,6 +45,14 @@ export abstract class BaseCrudService<T> {
     queryFilters: Record<string, typeof BaseFilter>
   ): BaseCrudService<T> {
     this.queryFilters = queryFilters;
+
+    return this;
+  }
+
+  public setQueryFiltersPolicies(
+    queryFiltersPolicies: Record<string, typeof BaseFilterPolicy | boolean>
+  ): BaseCrudService<T> {
+    this.queryFilterPolicies = queryFiltersPolicies;
 
     return this;
   }
@@ -183,8 +196,24 @@ export abstract class BaseCrudService<T> {
       findOptions = merge(findOptions, filter);
     });
 
-    //RUN query-query-query-query-queryFilters
+    //RUN queryFilters
     Object.entries(this.queryFilters).forEach(([key, filterClass]) => {
+      if (Object.keys(this.queryFilterPolicies).includes(key)) {
+        if (
+          typeof this.queryFilterPolicies[key] === 'boolean' &&
+          !this.queryFilterPolicies[key]
+        ) {
+          throw new UnauthorizedException(
+            `You not allowed to query \"${key}\"`
+          );
+        }
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        const queryFilterPolicy = new this.queryFilterPolicies[key]();
+
+        queryFilterPolicy.authorizeFilter(key, listRequestDto.filter.get(key));
+      }
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const filterInstance = new filterClass(key);
