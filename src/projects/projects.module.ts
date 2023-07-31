@@ -3,13 +3,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Project } from './entities/project.entity';
 import { ProjectsController } from './projects.controller';
 import { ProjectsService } from './projects.service';
+import { ByStatusQueryFilter } from './query-filters/by-status.query.filter';
+import { ForUserQueryFilter } from './query-filters/for-user.query.filter';
 
 @Module({
-  imports: [
-    TypeOrmModule.forFeature([Project])
-  ],
+  imports: [TypeOrmModule.forFeature([Project])],
   controllers: [ProjectsController],
-  providers: [ProjectsService]
+  providers: [ProjectsService, ByStatusQueryFilter, ForUserQueryFilter]
 })
-export class ProjectsModule {
-}
+export class ProjectsModule {}

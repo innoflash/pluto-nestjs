@@ -4,6 +4,7 @@ import { FindByIdQueryFilter } from './query-filters/find-by-id.query.filter';
 import { LimitingQueryFilter } from './query-filters/limiting.query.filter';
 import { LoadRelationshipsQueryFilter } from './query-filters/load-relationships.query.filter';
 import { OrderingQueryFilter } from './query-filters/ordering.query.filter';
+import { UserRelationPolicy } from './relation-policies/user-relation.policy';
 
 @Module({
   providers: [
@@ -11,14 +12,16 @@ import { OrderingQueryFilter } from './query-filters/ordering.query.filter';
     FindByIdQueryFilter,
     LimitingQueryFilter,
     LoadRelationshipsQueryFilter,
-    OrderingQueryFilter
+    OrderingQueryFilter,
+    UserRelationPolicy
   ],
   exports: [
     ByUserIdQueryFilter,
     FindByIdQueryFilter,
     LimitingQueryFilter,
     LoadRelationshipsQueryFilter,
-    OrderingQueryFilter
+    OrderingQueryFilter,
+    UserRelationPolicy
   ]
 })
 export class SharedModule {}
