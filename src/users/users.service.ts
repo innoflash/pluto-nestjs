@@ -20,7 +20,10 @@ export class UsersService extends BaseCrudService<User> {
 
   public async findOne(email: string): Promise<User | undefined> {
     return this.usersRepository.findOne({
-      where: { email }
+      where: { email },
+      relations: {
+        roles: true
+      }
     });
   }
 }
