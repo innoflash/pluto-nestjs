@@ -18,7 +18,7 @@ export class UsersService extends BaseCrudService<User> {
     return this.usersRepository;
   }
 
-  public async findOne(email: string): Promise<User | undefined> {
+  public async findByEmail(email: string): Promise<User | undefined> {
     return this.usersRepository.findOne({
       where: { email },
       relations: {

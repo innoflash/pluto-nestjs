@@ -7,7 +7,7 @@ export class AuthenticationService {
   public constructor(private readonly usersService: UsersService) {}
 
   public async validate(email: string, password: string): Promise<any> {
-    const user = await this.usersService.findOne(email);
+    const user = await this.usersService.findByEmail(email);
 
     if (await bcrypt.compare(password, user.password)) {
       return user;
