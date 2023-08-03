@@ -15,6 +15,9 @@ services:
     volumes:
       - /app/node_modules
       - ./src:/app/src
+      - ./.env:/app/.en
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
 
   postgres:
     image: postgres
