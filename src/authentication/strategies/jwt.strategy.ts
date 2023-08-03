@@ -25,6 +25,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: any): Promise<User> {
     const user = await this.usersService.findByEmail(payload.email, true);
 
+    this.requestService.setUserId(user.id);
+
     this.requestService.setCurrentUserRoles(user.roles.map(role => role.name));
 
     delete user.roles;

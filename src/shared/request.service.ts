@@ -8,6 +8,7 @@ import { UserRole } from '../users/user-role';
 export class RequestService {
   private currentUserRoles: Array<UserRole> = [];
   private user?: User;
+  private userId?: number;
 
   public setCurrentUserRoles(currentUserRoles: Array<UserRole>) {
     this.currentUserRoles = currentUserRoles;
@@ -17,11 +18,19 @@ export class RequestService {
     this.user = user;
   }
 
+  public setUserId(userId: number) {
+    this.userId = userId;
+  }
+
   public getCurrentUserRoles(): Array<UserRole> {
     return this.currentUserRoles;
   }
 
   public getUser(): User {
     return this.user;
+  }
+
+  public getUserId(): number {
+    return this.userId;
   }
 }
