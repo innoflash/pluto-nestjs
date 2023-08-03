@@ -23,7 +23,8 @@ import { RequestService } from './request.service';
     LimitingQueryFilter,
     LoadRelationshipsQueryFilter,
     OrderingQueryFilter,
-    UserRelationPolicy
+    UserRelationPolicy,
+    RequestService
   ]
 })
 export class SharedModule {}

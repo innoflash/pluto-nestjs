@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { SharedModule } from '../shared/shared.module';
 import { UsersModule } from '../users/users.module';
 import { AuthenticationController } from './authentication.controller';
 import { AuthenticationService } from './authentication.service';
@@ -13,6 +14,7 @@ import { LocalStrategy } from './strategies/local.strategy';
   providers: [AuthenticationService, LocalStrategy, JwtStrategy],
   imports: [
     UsersModule,
+    SharedModule,
     PassportModule.register({
       defaultStrategy: 'jwt'
     }),
