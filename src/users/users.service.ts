@@ -22,10 +22,7 @@ export class UsersService extends BaseCrudService<User> {
     console.log('is u crazy');
 
     return this.usersRepository.findOne({
-      where: { email },
-      relations: {
-        roles: true
-      }
+      where: { email }
     });
   }
 }

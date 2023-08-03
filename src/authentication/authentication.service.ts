@@ -10,7 +10,10 @@ export class AuthenticationService {
     const user = await this.usersService.findByEmail(email);
 
     if (await bcrypt.compare(password, user.password)) {
-      return user;
+      return {
+        email: user.email,
+        sub: user.id
+      };
     }
 
     return null;
