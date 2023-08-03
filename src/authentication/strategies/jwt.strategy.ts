@@ -29,7 +29,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     this.requestService.setCurrentUserRoles(user.roles.map(role => role.name));
 
-    delete user.roles;
     this.requestService.setUser(user);
 
     return user;

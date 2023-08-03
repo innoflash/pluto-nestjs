@@ -5,9 +5,11 @@ import {
   Param,
   ParseIntPipe,
   Query,
+  UseGuards,
   UseInterceptors
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { UsersService } from './users.service';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
@@ -20,6 +22,7 @@ import { ProjectQueryFilter } from './query-filters/project.query.filter';
 export class UsersController {
   public constructor(private readonly usersService: UsersService) {}
 
+  @UseGuards(JwtAuthGuard)
   @Get('')
   public list(@Query() queryParams: ListRequestDto) {
     return this.usersService

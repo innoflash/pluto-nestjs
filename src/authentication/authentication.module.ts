@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { RequestService } from '../shared/request.service';
 import { SharedModule } from '../shared/shared.module';
 import { UsersModule } from '../users/users.module';
 import { AuthenticationController } from './authentication.controller';
@@ -11,7 +12,12 @@ import { LocalStrategy } from './strategies/local.strategy';
 
 @Module({
   controllers: [AuthenticationController],
-  providers: [AuthenticationService, LocalStrategy, JwtStrategy],
+  providers: [
+    AuthenticationService,
+    LocalStrategy,
+    JwtStrategy,
+    RequestService
+  ],
   imports: [
     UsersModule,
     SharedModule,

@@ -1,10 +1,8 @@
-import { Injectable, Scope } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { User } from '../users/entities/user.entity';
 import { UserRole } from '../users/user-role';
 
-@Injectable({
-  scope: Scope.REQUEST
-})
+@Injectable()
 export class RequestService {
   private currentUserRoles: Array<UserRole> = [];
   private user?: User;
