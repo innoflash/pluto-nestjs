@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { BaseCrudService } from '../shared/base-crud.service';
-import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { BaseCrudService } from '../shared/base-crud.service';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UsersService extends BaseCrudService<User> {
@@ -18,11 +18,20 @@ export class UsersService extends BaseCrudService<User> {
     return this.usersRepository;
   }
 
-  public async findByEmail(email: string): Promise<User | undefined> {
-    console.log('is u crazy');
-
-    return this.usersRepository.findOne({
+  public async findByEmail(
+    email: string,
+    loadRoles = false
+  ): Promise<User | undefined> {
+    const findOneOptions: Record<string, any> = {
       where: { email }
-    });
+    };
+
+    if (loadRoles) {
+      findOneOptions.relations = {
+        roles: true
+      };
+    }
+
+    return this.usersRepository.findOne(findOneOptions);
   }
 }
