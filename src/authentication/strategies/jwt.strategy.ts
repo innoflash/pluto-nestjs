@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { RequestService } from '../../shared/request.service';
 import { User } from '../../users/entities/user.entity';
 import { UsersService } from '../../users/users.service';
 
@@ -11,7 +12,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     private readonly configService: ConfigService,
-    private readonly usersService: UsersService
+    private readonly usersService: UsersService,
+    private readonly requestService: RequestService
   ) {
     super({
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -21,6 +23,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any): Promise<User> {
-    return await this.usersService.findByEmail(payload.email, true);
+    const user = await this.usersService.findByEmail(payload.email, true);
+
+    this.requestService.setCurrentUserRoles(user.roles.map(role => role.name));
+
+    delete user.roles;
+    this.requestService.setUser(user);
+
+    return user;
   }
 }
