@@ -10,11 +10,12 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
-import { ProjectsService } from './projects.service';
+import { FindRequestDto } from '../shared/dto/find-request.dto';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
+import { ForCurrentUserFilterPolicy } from '../shared/filter-policies/for-current-user.filter.policy';
+import { ProjectsService } from './projects.service';
 import { ByStatusQueryFilter } from './query-filters/by-status.query.filter';
 import { ForUserQueryFilter } from './query-filters/for-user.query.filter';
-import { FindRequestDto } from '../shared/dto/find-request.dto';
 
 @Controller('projects')
 @ApiTags('Projects')
@@ -31,7 +32,14 @@ export class ProjectsController {
       'for-user': ForUserQueryFilter
     };
 
-    return this.projectsService.setQueryFilters(filters).list(listRequestDto);
+    return this.projectsService
+      .setQueryFilters(filters)
+      .setQueryFiltersPolicies({
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        'for-user': ForCurrentUserFilterPolicy
+      })
+      .list(listRequestDto);
   }
 
   @Get(':id')

@@ -1,8 +1,5 @@
-import { ForbiddenException, Injectable, Scope } from '@nestjs/common';
+import { ForbiddenException } from '@nestjs/common';
 
-@Injectable({
-  scope: Scope.REQUEST
-})
 export abstract class BaseQueryFilterPolicy {
   protected abstract handleAuthorization(
     filterKey: string,
