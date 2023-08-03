@@ -1,8 +1,12 @@
+import { ForbiddenException, Inject, Injectable } from '@nestjs/common';
+import { REQUEST } from '@nestjs/core';
+import { Request } from 'express';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
-import { ForbiddenException, Injectable } from '@nestjs/common';
 
 @Injectable()
 export abstract class BaseQueryFilter {
+  public constructor(@Inject(REQUEST) protected readonly request: Request) {}
+
   protected abstract filterConditions(
     value: unknown
   ): FindManyOptions | FindOneOptions;
