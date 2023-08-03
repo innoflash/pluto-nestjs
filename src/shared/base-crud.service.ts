@@ -89,8 +89,12 @@ export abstract class BaseCrudService<T> {
     let findManyOptions = this.findOptions(listRequestDto) as FindManyOptions;
 
     [
-      new OrderingQueryFilter().filter(listRequestDto),
-      new LimitingQueryFilter().filter(listRequestDto)
+      this.moduleRef
+        .get(OrderingQueryFilter, { strict: false })
+        .filter(listRequestDto),
+      this.moduleRef
+        .get(LimitingQueryFilter, { strict: false })
+        .filter(listRequestDto)
     ].forEach(filter => (findManyOptions = merge(findManyOptions, filter)));
 
     console.log(findManyOptions);
@@ -147,7 +151,10 @@ export abstract class BaseCrudService<T> {
 
     findOneOptions = merge(
       findOneOptions,
-      new FindByIdQueryFilter().setKey(key).filter(id)
+      this.moduleRef
+        .get(FindByIdQueryFilter, { strict: false })
+        .setKey(key)
+        .filter(id)
     );
 
     return this.getRepository().findOne(findOneOptions);
@@ -198,7 +205,9 @@ export abstract class BaseCrudService<T> {
       });
 
     const defaultFilters = [
-      new LoadRelationshipsQueryFilter().filter(authorizedRelations, true)
+      this.moduleRef
+        .get(LoadRelationshipsQueryFilter, { strict: false })
+        .filter(authorizedRelations, true)
     ];
 
     defaultFilters.forEach(filter => {
