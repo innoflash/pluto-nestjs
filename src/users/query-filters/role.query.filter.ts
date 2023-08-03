@@ -1,8 +1,10 @@
+import { Injectable } from '@nestjs/common';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
 import { BaseQueryFilter } from '../../shared/base-query-filter';
 import { InvalidRoleException } from '../../shared/exception-filters/invalid-role.exception';
 import { UserRole } from '../user-role';
 
+@Injectable()
 export class RoleQueryFilter extends BaseQueryFilter {
   protected filterConditions(
     roleName: UserRole

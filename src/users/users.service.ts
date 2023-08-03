@@ -19,6 +19,8 @@ export class UsersService extends BaseCrudService<User> {
   }
 
   public async findByEmail(email: string): Promise<User | undefined> {
+    console.log('is u crazy');
+
     return this.usersRepository.findOne({
       where: { email },
       relations: {
