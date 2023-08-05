@@ -7,6 +7,7 @@ import { BaseQueryFilterPolicy } from './base-query-filter.policy';
 import { BaseRelationPolicy } from './base-relation.policy';
 import { FindRequestDto } from './dto/find-request.dto';
 import { ListRequestDto } from './dto/list-request.dto';
+import { InvalidQueryFilterPolicyException } from './exception-filters/invalid-query-filter-policy.exception';
 import { ClassConstructor } from './interceptors/serialize.interceptor';
 import { FindByIdQueryFilter } from './query-filters/find-by-id.query.filter';
 import { LimitingQueryFilter } from './query-filters/limiting.query.filter';
@@ -214,7 +215,6 @@ export abstract class BaseCrudService<T> {
 
     //RUN queryFilters
     Object.entries(this.queryFilters).forEach(([key, filterClass]) => {
-      console.log(key, filterClass);
       if (
         Object.keys(this.queryFilterPolicies).includes(key) &&
         listRequestDto.filter?.has(key)
@@ -242,10 +242,13 @@ export abstract class BaseCrudService<T> {
             this.queryFilterPolicies[key]
           )) as BaseQueryFilterPolicy;
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        //@ts-ignore
-        console.log(queryFilterPolicy.request);
-        console.log(JSON.stringify(queryFilterPolicy));
+        if (!(queryFilterPolicy instanceof BaseQueryFilterPolicy)) {
+          throw new InvalidQueryFilterPolicyException(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            queryFilterPolicy.constructor.name
+          );
+        }
 
         queryFilterPolicy.authorizeFilter(key, listRequestDto.filter.get(key));
       }
