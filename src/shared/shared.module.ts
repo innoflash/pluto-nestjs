@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
-import { ForCurrentUserFilterPolicy } from './filter-policies/for-current-user.filter.policy';
+import { ForCurrentUserFilterPolicy } from './policies/queries/for-current-user.filter.policy';
+import { TeachersAllowedRelationsPolicy } from './policies/relations/teachers-allowed-relations.policy';
 import { ByUserIdQueryFilter } from './query-filters/by-user-id.query.filter';
 import { FindByIdQueryFilter } from './query-filters/find-by-id.query.filter';
 import { LimitingQueryFilter } from './query-filters/limiting.query.filter';
@@ -17,7 +18,8 @@ import { RequestService } from './request.service';
     OrderingQueryFilter,
     UserRelationPolicy,
     RequestService,
-    ForCurrentUserFilterPolicy
+    ForCurrentUserFilterPolicy,
+    TeachersAllowedRelationsPolicy
   ],
   exports: [
     ByUserIdQueryFilter,
@@ -27,7 +29,8 @@ import { RequestService } from './request.service';
     OrderingQueryFilter,
     UserRelationPolicy,
     RequestService,
-    ForCurrentUserFilterPolicy
+    ForCurrentUserFilterPolicy,
+    TeachersAllowedRelationsPolicy
   ]
 })
 export class SharedModule {}

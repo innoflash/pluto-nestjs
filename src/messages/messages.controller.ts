@@ -13,8 +13,8 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
+import { TeachersAllowedRelationsPolicy } from '../shared/policies/relations/teachers-allowed-relations.policy';
 import { MessagesService } from './messages.service';
-import { RecipientRelationPolicy } from './policies/recipient.relation.policy';
 import { BySenderQueryFilter } from './query-filters/by-sender.query.filter';
 import { ForRecipientQueryFilter } from './query-filters/for-recipient.query.filter';
 import { MessageStatusQueryFilter } from './query-filters/message-status.query.filter';
@@ -42,7 +42,7 @@ export class MessagesController {
     return this.messagesService
       .setQueryFilters(filters)
       .setRelationsPolicies({
-        'recipient.profile': RecipientRelationPolicy
+        'recipient.profile': TeachersAllowedRelationsPolicy
       })
       .list(queryParams);
   }

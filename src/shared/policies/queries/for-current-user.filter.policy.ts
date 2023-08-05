@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { UserRole } from '../../users/user-role';
-import { BaseQueryFilterPolicy } from '../base-query-filter.policy';
-import { RequestService } from '../request.service';
+import { UserRole } from '../../../users/user-role';
+import { BaseQueryFilterPolicy } from '../../base-query-filter.policy';
+import { RequestService } from '../../request.service';
 
 @Injectable()
 export class ForCurrentUserFilterPolicy extends BaseQueryFilterPolicy {

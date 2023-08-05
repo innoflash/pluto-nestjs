@@ -1,17 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { BaseRelationPolicy } from '../../shared/base-relation.policy';
-import { RequestService } from '../../shared/request.service';
-import { UserRole } from '../../users/user-role';
+import { TeachersAllowedRelationsPolicy } from '../../shared/policies/relations/teachers-allowed-relations.policy';
 
 @Injectable()
-export class RecipientRelationPolicy extends BaseRelationPolicy {
-  public constructor(private readonly requestService: RequestService) {
-    super();
-  }
-
-  protected handleAuthorization(relation: string): boolean {
-    console.log(relation, 'the relation', this.requestService);
-
-    return this.requestService.getCurrentUserRoles().includes(UserRole.TEACHER);
-  }
-}
+export class RecipientRelationPolicy extends TeachersAllowedRelationsPolicy {}

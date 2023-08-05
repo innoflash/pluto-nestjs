@@ -12,8 +12,8 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
-import { ForCurrentUserFilterPolicy } from '../shared/filter-policies/for-current-user.filter.policy';
-import { MemberProfileRelationPolicy } from './policies/relation/member-profile.relation.policy';
+import { ForCurrentUserFilterPolicy } from '../shared/policies/queries/for-current-user.filter.policy';
+import { TeachersAllowedRelationsPolicy } from '../shared/policies/relations/teachers-allowed-relations.policy';
 import { ProjectsService } from './projects.service';
 import { ByStatusQueryFilter } from './query-filters/by-status.query.filter';
 import { ForUserQueryFilter } from './query-filters/for-user.query.filter';
@@ -39,7 +39,7 @@ export class ProjectsController {
         'for-user': ForCurrentUserFilterPolicy
       })
       .setRelationsPolicies({
-        'members.profile': MemberProfileRelationPolicy
+        'members.profile': TeachersAllowedRelationsPolicy
       })
       .list(listRequestDto);
   }
