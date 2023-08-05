@@ -1,9 +1,13 @@
 import { BaseRelationPolicy } from '../../shared/base-relation.policy';
+import { RequestService } from '../../shared/request.service';
+import { UserRole } from '../../users/user-role';
 
 export class RecipientRelationPolicy extends BaseRelationPolicy {
-  protected handleAuthorization(relation: string): boolean {
-    console.log('We are using this policy', relation);
+  public constructor(private readonly requestService: RequestService) {
+    super();
+  }
 
-    return false;
+  protected handleAuthorization(relation: string): boolean {
+    return this.requestService.getCurrentUserRoles().includes(UserRole.TEACHER);
   }
 }
