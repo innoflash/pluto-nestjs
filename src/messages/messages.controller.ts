@@ -15,6 +15,7 @@ import { FindRequestDto } from '../shared/dto/find-request.dto';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
 import { TeachersAllowedRelationsPolicy } from '../shared/policies/relations/teachers-allowed-relations.policy';
 import { MessagesService } from './messages.service';
+import { SenderFilterPolicy } from './policies/filters/sender.filter.policy';
 import { BySenderQueryFilter } from './query-filters/by-sender.query.filter';
 import { ForRecipientQueryFilter } from './query-filters/for-recipient.query.filter';
 import { MessageStatusQueryFilter } from './query-filters/message-status.query.filter';
@@ -41,6 +42,9 @@ export class MessagesController {
 
     return this.messagesService
       .setQueryFilters(filters)
+      .setQueryFiltersPolicies({
+        sender: SenderFilterPolicy
+      })
       .setRelationsPolicies({
         'recipient.profile': TeachersAllowedRelationsPolicy
       })

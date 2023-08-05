@@ -7,6 +7,7 @@ import { BoardMessage } from './entities/board-message.entity';
 import { Message } from './entities/message.entity';
 import { MessagesController } from './messages.controller';
 import { MessagesService } from './messages.service';
+import { SenderFilterPolicy } from './policies/filters/sender.filter.policy';
 import { RecipientRelationPolicy } from './policies/recipient.relation.policy';
 import { BySenderQueryFilter } from './query-filters/by-sender.query.filter';
 import { ForRecipientQueryFilter } from './query-filters/for-recipient.query.filter';
@@ -22,7 +23,8 @@ import { MessageTypeQueryFilter } from './query-filters/message-type.query.filte
     ForRecipientQueryFilter,
     MessageStatusQueryFilter,
     MessageTypeQueryFilter,
-    RecipientRelationPolicy
+    RecipientRelationPolicy,
+    SenderFilterPolicy
   ],
   controllers: [MessagesController, BoardMessagesController]
 })
