@@ -13,7 +13,9 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
+import { EntityPolicy } from '../shared/policies/entity.policy';
 import { TeachersAllowedRelationsPolicy } from '../shared/policies/relations/teachers-allowed-relations.policy';
+import { Message } from './entities/message.entity';
 import { MessagesService } from './messages.service';
 import { SenderFilterPolicy } from './policies/filters/sender.filter.policy';
 import { BySenderQueryFilter } from './query-filters/by-sender.query.filter';
@@ -26,7 +28,10 @@ import { MessageListingDto } from './responses/message-listing.dto';
 @UseGuards(JwtAuthGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 export class MessagesController {
-  public constructor(private readonly messagesService: MessagesService) {}
+  public constructor(
+    private readonly messagesService: MessagesService,
+    private readonly entityPolicy: EntityPolicy<Message>
+  ) {}
 
   @ApiOkResponse({ type: MessageListingDto })
   @ApiOperation({
@@ -59,6 +64,8 @@ export class MessagesController {
     @Param('id', ParseIntPipe) id: number,
     @Query() queryParams: FindRequestDto
   ) {
-    return this.messagesService.findOne(id, queryParams);
+    return this.messagesService.findOne(id, queryParams).then(message => {
+      this.entityPolicy.authorize(message);
+    });
   }
 }
