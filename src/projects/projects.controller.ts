@@ -13,6 +13,7 @@ import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
 import { ForCurrentUserFilterPolicy } from '../shared/filter-policies/for-current-user.filter.policy';
+import { MemberProfileRelationPolicy } from './policies/relation/member-profile.relation.policy';
 import { ProjectsService } from './projects.service';
 import { ByStatusQueryFilter } from './query-filters/by-status.query.filter';
 import { ForUserQueryFilter } from './query-filters/for-user.query.filter';
@@ -36,6 +37,9 @@ export class ProjectsController {
       .setQueryFilters(filters)
       .setQueryFiltersPolicies({
         'for-user': ForCurrentUserFilterPolicy
+      })
+      .setRelationsPolicies({
+        'members.profile': MemberProfileRelationPolicy
       })
       .list(listRequestDto);
   }
