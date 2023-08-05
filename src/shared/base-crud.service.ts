@@ -240,6 +240,11 @@ export abstract class BaseCrudService<T> {
             this.queryFilterPolicies[key]
           )) as BaseQueryFilterPolicy;
 
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        console.log(queryFilterPolicy.request);
+        console.log(JSON.stringify(queryFilterPolicy));
+
         queryFilterPolicy.authorizeFilter(key, listRequestDto.filter.get(key));
       }
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment

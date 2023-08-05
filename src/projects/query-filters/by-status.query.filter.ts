@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { BaseQueryFilter } from '../../shared/base-query-filter';
 import { FindManyOptions, FindOneOptions } from 'typeorm';
+import { BaseQueryFilter } from '../../shared/base-query-filter';
 import { ProjectStatus } from '../project-status';
 
 @Injectable()
