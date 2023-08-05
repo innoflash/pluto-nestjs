@@ -8,6 +8,7 @@ import { BaseRelationPolicy } from './base-relation.policy';
 import { FindRequestDto } from './dto/find-request.dto';
 import { ListRequestDto } from './dto/list-request.dto';
 import { InvalidQueryFilterPolicyException } from './exception-filters/invalid-query-filter-policy.exception';
+import { InvalidQueryFilterException } from './exception-filters/invalid-query-filter.exception';
 import { ClassConstructor } from './interceptors/serialize.interceptor';
 import { FindByIdQueryFilter } from './query-filters/find-by-id.query.filter';
 import { LimitingQueryFilter } from './query-filters/limiting.query.filter';
@@ -18,7 +19,7 @@ import { OrderingQueryFilter } from './query-filters/ordering.query.filter';
   scope: Scope.REQUEST
 })
 export abstract class BaseCrudService<T> {
-  private queryFilters: Record<string, typeof BaseQueryFilter> = {};
+  private queryFilters: Record<string, ClassConstructor> = {};
   private relationsPolicies: Record<
     string,
     typeof BaseRelationPolicy | boolean
@@ -50,7 +51,7 @@ export abstract class BaseCrudService<T> {
    * @returns The method is returning an instance of the BaseCrudService class.
    */
   public setQueryFilters(
-    queryFilters: Record<string, typeof BaseQueryFilter>
+    queryFilters: Record<string, ClassConstructor>
   ): BaseCrudService<T> {
     this.queryFilters = queryFilters;
 
@@ -228,42 +229,51 @@ export abstract class BaseCrudService<T> {
           );
         }
 
-        const queryFilterPolicy = (this.moduleRef.get(
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          //@ts-ignore
-          this.queryFilterPolicies[key],
-          {
-            strict: false
-          }
-        ) ||
+        const queryFilterPolicy =
+          this.moduleRef.get(
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            //@ts-ignore
+            this.queryFilterPolicies[key],
+            {
+              strict: false
+            }
+          ) ||
           this.moduleRef.create(
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             //@ts-ignore
             this.queryFilterPolicies[key]
-          )) as BaseQueryFilterPolicy;
+          );
 
         if (!(queryFilterPolicy instanceof BaseQueryFilterPolicy)) {
           throw new InvalidQueryFilterPolicyException(
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            //@ts-ignore
             queryFilterPolicy.constructor.name
           );
         }
 
-        queryFilterPolicy.authorizeFilter(key, listRequestDto.filter.get(key));
+        (queryFilterPolicy as BaseQueryFilterPolicy).authorizeFilter(
+          key,
+          listRequestDto.filter.get(key)
+        );
       }
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      const filterInstance = (this.moduleRef.get(filterClass, {
-        strict: false
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-      }) || this.moduleRef.create(filterClass)) as BaseQueryFilter;
+      const filterInstance =
+        this.moduleRef.get(filterClass, {
+          strict: false
+          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+          // @ts-ignore
+        }) || this.moduleRef.create(filterClass);
+
+      if (!(filterInstance instanceof BaseQueryFilter)) {
+        throw new InvalidQueryFilterException(filterInstance.constructor.name);
+      }
 
       if (listRequestDto.filter?.has(key)) {
         findOptions = merge(
           findOptions,
-          filterInstance.filter(listRequestDto.filter.get(key))
+          (filterInstance as BaseQueryFilter).filter(
+            listRequestDto.filter.get(key)
+          )
         );
       }
     });

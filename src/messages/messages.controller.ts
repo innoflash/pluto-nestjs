@@ -1,3 +1,4 @@
+58;
 import {
   ClassSerializerInterceptor,
   Controller,
@@ -8,14 +9,13 @@ import {
   UseInterceptors
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
-import { BaseQueryFilter } from '../shared/base-query-filter';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
+import { MessagesService } from './messages.service';
+import { RecipientRelationPolicy } from './policies/recipient.relation.policy';
 import { BySenderQueryFilter } from './query-filters/by-sender.query.filter';
 import { ForRecipientQueryFilter } from './query-filters/for-recipient.query.filter';
 import { MessageStatusQueryFilter } from './query-filters/message-status.query.filter';
-import { MessagesService } from './messages.service';
-import { RecipientRelationPolicy } from './policies/recipient.relation.policy';
 import { MessageListingDto } from './responses/message-listing.dto';
 
 @Controller('messages')
@@ -30,7 +30,7 @@ export class MessagesController {
   })
   @Get()
   public list(@Query() queryParams: ListRequestDto) {
-    const filters: Record<string, typeof BaseQueryFilter> = {
+    const filters = {
       status: MessageStatusQueryFilter,
       sender: BySenderQueryFilter,
       recipient: ForRecipientQueryFilter
