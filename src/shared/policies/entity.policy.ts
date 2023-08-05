@@ -14,7 +14,9 @@ export class EntityPolicy<T = any> {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     if (+entity[userIdKey] !== this.requestService.getUserId()) {
-      throw new ForbiddenException();
+      throw new ForbiddenException(
+        `You are not allowed to query this ${entity.constructor.name.toLowerCase()}`
+      );
     }
 
     return entity;

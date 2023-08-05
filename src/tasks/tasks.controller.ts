@@ -12,6 +12,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
+import { EntityPolicy } from '../shared/policies/entity.policy';
 import { ForCurrentUserFilterPolicy } from '../shared/policies/queries/for-current-user.filter.policy';
 import { TeachersAllowedRelationsPolicy } from '../shared/policies/relations/teachers-allowed-relations.policy';
 import { ByUserIdQueryFilter } from '../shared/query-filters/by-user-id.query.filter';
@@ -22,7 +23,10 @@ import { TasksService } from './tasks.service';
 @UseGuards(JwtAuthGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 export class TasksController {
-  public constructor(private readonly tasksService: TasksService) {}
+  public constructor(
+    private readonly tasksService: TasksService,
+    private readonly entityPolicy: EntityPolicy
+  ) {}
 
   @Get('')
   public list(@Query() listRequestDto: ListRequestDto) {
@@ -44,6 +48,8 @@ export class TasksController {
     @Param('id', ParseIntPipe) id: number,
     @Query() findRequestDto: FindRequestDto
   ) {
-    return this.tasksService.findOne(id, findRequestDto);
+    return this.tasksService
+      .findOne(id, findRequestDto)
+      .then(task => this.entityPolicy.authorize(task));
   }
 }
