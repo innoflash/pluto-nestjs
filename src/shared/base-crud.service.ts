@@ -1,4 +1,4 @@
-import { Injectable, Scope, UnauthorizedException } from '@nestjs/common';
+import { ForbiddenException, Injectable, Scope } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
 import merge from 'lodash.merge';
 import { FindManyOptions, FindOneOptions, Repository } from 'typeorm';
@@ -9,6 +9,7 @@ import { FindRequestDto } from './dto/find-request.dto';
 import { ListRequestDto } from './dto/list-request.dto';
 import { InvalidQueryFilterPolicyException } from './exception-filters/invalid-query-filter-policy.exception';
 import { InvalidQueryFilterException } from './exception-filters/invalid-query-filter.exception';
+import { InvalidRelationPolicyException } from './exception-filters/invalid-relation-policy.exception';
 import { ClassConstructor } from './interceptors/serialize.interceptor';
 import { FindByIdQueryFilter } from './query-filters/find-by-id.query.filter';
 import { LimitingQueryFilter } from './query-filters/limiting.query.filter';
@@ -20,19 +21,12 @@ import { OrderingQueryFilter } from './query-filters/ordering.query.filter';
 })
 export abstract class BaseCrudService<T> {
   private queryFilters: Record<string, ClassConstructor> = {};
-  private relationsPolicies: Record<
-    string,
-    typeof BaseRelationPolicy | boolean
-  > = {};
+  private relationsPolicies: Record<string, ClassConstructor | boolean> = {};
   private queryFilterPolicies: Record<string, ClassConstructor | boolean> = {};
 
   // private readonly repository: Repository<AbstractBaseEntity<T>>;
 
-  public constructor(
-    protected readonly moduleRef: ModuleRef // @Inject('DATA_SOURCE') private readonly dataSource: DataSource
-  ) {
-    //   this.repository = this.dataSource.getRepository(AbstractBaseEntity<T>);
-  }
+  public constructor(protected readonly moduleRef: ModuleRef) {}
 
   /* The `protected abstract getRepository(): Repository<T>` method is a placeholder method that needs
   to be implemented by the child classes that extend the `BaseCrudService` class. It is used to
@@ -67,7 +61,7 @@ export abstract class BaseCrudService<T> {
   }
 
   public setRelationsPolicies(
-    relationsPolicies: Record<string, typeof BaseRelationPolicy | boolean>
+    relationsPolicies: Record<string, ClassConstructor | boolean>
   ) {
     this.relationsPolicies = relationsPolicies;
 
@@ -99,7 +93,7 @@ export abstract class BaseCrudService<T> {
 
     console.log(findManyOptions);
 
-    // Whether or not to paginate or not.
+    // Whether to paginate or not.
     if (!listRequestDto.limit && !listRequestDto.page) {
       if ('skip' in findManyOptions) delete findManyOptions.skip;
       if ('take' in findManyOptions) delete findManyOptions.take;
@@ -181,6 +175,8 @@ export abstract class BaseCrudService<T> {
       return !Object.keys(this.relationsPolicies).includes(relation);
     });
 
+    console.log({ authorizedRelations }, this.relationsPolicies);
+
     //AUTHORIZE LOADING OF RELATIONS
     Object.entries(this.relationsPolicies)
       .filter(([key]) => {
@@ -191,15 +187,23 @@ export abstract class BaseCrudService<T> {
         if (typeof policy === 'boolean' && policy) {
           return authorizedRelations.push(relation);
         } else {
-          throw new UnauthorizedException(
-            `Forbidden from accessing ${relation}`
+          throw new ForbiddenException(`Forbidden from accessing ${relation}`);
+        }
+
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        //@ts-ignore
+        const relationPolicy = this.moduleRef.get(policy, { strict: false });
+
+        if (!(relationPolicy instanceof BaseRelationPolicy)) {
+          throw new InvalidRelationPolicyException(
+            relationPolicy.constructor.name
           );
         }
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        const relationPolicy = new policy();
 
-        if (relationPolicy.authorizeRelation(relation)) {
+        if (
+          (relationPolicy as BaseRelationPolicy).authorizeRelation(relation)
+        ) {
+          console.log('Relation', relation);
           authorizedRelations.push(relation);
         }
       });
@@ -224,9 +228,7 @@ export abstract class BaseCrudService<T> {
           typeof this.queryFilterPolicies[key] === 'boolean' &&
           !this.queryFilterPolicies[key]
         ) {
-          throw new UnauthorizedException(
-            `You not allowed to query \"${key}\"`
-          );
+          throw new ForbiddenException(`You not allowed to query \"${key}\"`);
         }
 
         const queryFilterPolicy =
