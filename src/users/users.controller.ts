@@ -5,21 +5,19 @@ import {
   Param,
   ParseIntPipe,
   Query,
-  UseGuards,
   UseInterceptors
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
-import { UsersService } from './users.service';
-import { ListRequestDto } from '../shared/dto/list-request.dto';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
-import { RoleQueryFilter } from './query-filters/role.query.filter';
+import { ListRequestDto } from '../shared/dto/list-request.dto';
 import { ProjectQueryFilter } from './query-filters/project.query.filter';
+import { RoleQueryFilter } from './query-filters/role.query.filter';
+import { UsersService } from './users.service';
 
 @Controller('users')
 @ApiTags('Users')
 @UseInterceptors(ClassSerializerInterceptor)
-@UseGuards(JwtAuthGuard)
+//@UseGuards(JwtAuthGuard)
 export class UsersController {
   public constructor(private readonly usersService: UsersService) {}
 
