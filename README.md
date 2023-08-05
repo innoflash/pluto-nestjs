@@ -12,7 +12,8 @@ The API was designed and inspired by a free template named [Pluto](https://theme
 
 ## Documentation
 The documentation is available on [Postman documentation](https://documenter.getpostman.com/view/7034853/2s946fdY5J)
-The users listing is left unguarded with auth guards so you have access to the users you can use for the tinkering.
+- Take note of the examples on the right darker section that can show you example response data for different queries.
+- The users listing is left unguarded with auth guards so you have access to the users you can use for the tinkering.
 
 ## Installation
 This project can be run on docker but first you will need to make a local copy of the environment file.
