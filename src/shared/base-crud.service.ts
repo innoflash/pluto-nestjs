@@ -7,6 +7,7 @@ import { BaseQueryFilterPolicy } from './base-query-filter.policy';
 import { BaseRelationPolicy } from './base-relation.policy';
 import { FindRequestDto } from './dto/find-request.dto';
 import { ListRequestDto } from './dto/list-request.dto';
+import { ClassConstructor } from './interceptors/serialize.interceptor';
 import { FindByIdQueryFilter } from './query-filters/find-by-id.query.filter';
 import { LimitingQueryFilter } from './query-filters/limiting.query.filter';
 import { LoadRelationshipsQueryFilter } from './query-filters/load-relationships.query.filter';
@@ -21,10 +22,7 @@ export abstract class BaseCrudService<T> {
     string,
     typeof BaseRelationPolicy | boolean
   > = {};
-  private queryFilterPolicies: Record<
-    string,
-    typeof BaseQueryFilterPolicy | boolean
-  > = {};
+  private queryFilterPolicies: Record<string, ClassConstructor | boolean> = {};
 
   // private readonly repository: Repository<AbstractBaseEntity<T>>;
 
@@ -59,7 +57,7 @@ export abstract class BaseCrudService<T> {
   }
 
   public setQueryFiltersPolicies(
-    queryFiltersPolicies: Record<string, typeof BaseQueryFilterPolicy | boolean>
+    queryFiltersPolicies: Record<string, ClassConstructor | boolean>
   ): BaseCrudService<T> {
     this.queryFilterPolicies = queryFiltersPolicies;
 
@@ -216,7 +214,11 @@ export abstract class BaseCrudService<T> {
 
     //RUN queryFilters
     Object.entries(this.queryFilters).forEach(([key, filterClass]) => {
-      if (Object.keys(this.queryFilterPolicies).includes(key)) {
+      console.log(key, filterClass);
+      if (
+        Object.keys(this.queryFilterPolicies).includes(key) &&
+        listRequestDto.filter?.has(key)
+      ) {
         if (
           typeof this.queryFilterPolicies[key] === 'boolean' &&
           !this.queryFilterPolicies[key]

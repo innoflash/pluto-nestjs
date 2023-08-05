@@ -7,7 +7,7 @@ import {
 import { plainToClass } from 'class-transformer';
 import { map, Observable } from 'rxjs';
 
-interface ClassConstructor {
+export interface ClassConstructor {
   new (...args: any[]): {};
 }
 
