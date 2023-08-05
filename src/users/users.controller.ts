@@ -19,10 +19,10 @@ import { ProjectQueryFilter } from './query-filters/project.query.filter';
 @Controller('users')
 @ApiTags('Users')
 @UseInterceptors(ClassSerializerInterceptor)
+@UseGuards(JwtAuthGuard)
 export class UsersController {
   public constructor(private readonly usersService: UsersService) {}
 
-  @UseGuards(JwtAuthGuard)
   @Get('')
   public list(@Query() queryParams: ListRequestDto) {
     return this.usersService
