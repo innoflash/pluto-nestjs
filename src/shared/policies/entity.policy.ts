@@ -3,21 +3,20 @@ import { UserRole } from '../../users/user-role';
 import { RequestService } from '../request.service';
 
 @Injectable()
-export class EntityPolicy<T> {
+export class EntityPolicy<T = any> {
   public constructor(private readonly requestService: RequestService) {}
 
   public authorize(entity: T, userIdKey = 'userId') {
-    console.log(entity);
     if (this.requestService.getCurrentUserRoles().includes(UserRole.TEACHER)) {
-      return true;
+      return entity;
     }
 
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
-    if (entity[userIdKey] !== this.requestService.getUserId) {
+    if (+entity[userIdKey] !== this.requestService.getUserId()) {
       throw new ForbiddenException();
     }
 
-    return true;
+    return entity;
   }
 }

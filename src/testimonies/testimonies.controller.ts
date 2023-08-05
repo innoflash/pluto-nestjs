@@ -12,6 +12,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
+import { EntityPolicy } from '../shared/policies/entity.policy';
 import { ForCurrentUserFilterPolicy } from '../shared/policies/queries/for-current-user.filter.policy';
 import { TeachersAllowedRelationsPolicy } from '../shared/policies/relations/teachers-allowed-relations.policy';
 import { ByUserIdQueryFilter } from '../shared/query-filters/by-user-id.query.filter';
@@ -22,7 +23,10 @@ import { TestimoniesService } from './testimonies.service';
 @UseGuards(JwtAuthGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 export class TestimoniesController {
-  public constructor(private readonly testimoniesService: TestimoniesService) {}
+  public constructor(
+    private readonly testimoniesService: TestimoniesService,
+    private readonly entityPolicy: EntityPolicy
+  ) {}
 
   @Get('')
   public list(@Query() listRequestDto: ListRequestDto) {
@@ -44,6 +48,8 @@ export class TestimoniesController {
     @Param('id', ParseIntPipe) id: number,
     @Query() queryParams: FindRequestDto
   ) {
-    return this.testimoniesService.findOne(id, queryParams);
+    return this.testimoniesService
+      .findOne(id, queryParams)
+      .then(testimony => this.entityPolicy.authorize(testimony));
   }
 }
