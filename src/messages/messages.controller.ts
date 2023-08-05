@@ -6,9 +6,11 @@ import {
   Param,
   ParseIntPipe,
   Query,
+  UseGuards,
   UseInterceptors
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from '../authentication/guards/jwt-auth.guard';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
 import { MessagesService } from './messages.service';
@@ -20,6 +22,7 @@ import { MessageListingDto } from './responses/message-listing.dto';
 
 @Controller('messages')
 @ApiTags('Messages')
+@UseGuards(JwtAuthGuard)
 @UseInterceptors(ClassSerializerInterceptor)
 export class MessagesController {
   public constructor(private readonly messagesService: MessagesService) {}

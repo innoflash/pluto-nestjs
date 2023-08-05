@@ -175,8 +175,6 @@ export abstract class BaseCrudService<T> {
       return !Object.keys(this.relationsPolicies).includes(relation);
     });
 
-    console.log({ authorizedRelations }, this.relationsPolicies);
-
     //AUTHORIZE LOADING OF RELATIONS
     Object.entries(this.relationsPolicies)
       .filter(([key]) => {
@@ -184,10 +182,12 @@ export abstract class BaseCrudService<T> {
       })
       .forEach(([relation, policy]) => {
         console.log(relation, 'RELATION', typeof policy);
+        if (typeof policy === 'boolean' && !policy) {
+          throw new ForbiddenException(`Forbidden from accessing ${relation}`);
+        }
+
         if (typeof policy === 'boolean' && policy) {
           return authorizedRelations.push(relation);
-        } else {
-          throw new ForbiddenException(`Forbidden from accessing ${relation}`);
         }
 
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
