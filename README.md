@@ -12,49 +12,23 @@ The API was designed and inspired by a free template named [Pluto](https://theme
 
 ## Documentation
 The documentation is available on [Postman documentation](https://documenter.getpostman.com/view/7034853/2s946fdY5J)
+The users listing is left unguarded with auth guards so you have access to the users you can use for the tinkering.
 
 ## Installation
-This project can be run on docker but first
+This project can be run on docker but first you will need to make a local copy of the environment file.
 ```bash
-$ npm install
+cp .env.example .env
 ```
-
-## Running the app
-
+Next you will need to run the project via docker compose. This will setup your DB and start the API backend.
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+docker-compose up
 ```
-
-## Test
-
+Open another terminal tab and migrate and seed the database so you can have data to toy around with.
+All users created here have the password of `secret`
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+docker exec -it backend npm run migrate:seed
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
+That is pretty much it. The backend will be available on:
+```bash
+http://localhost:3000
+```
