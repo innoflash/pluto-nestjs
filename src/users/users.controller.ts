@@ -8,6 +8,7 @@ import {
   UseInterceptors
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
+import * as process from 'process';
 import { FindRequestDto } from '../shared/dto/find-request.dto';
 import { ListRequestDto } from '../shared/dto/list-request.dto';
 import { ProjectQueryFilter } from './query-filters/project.query.filter';
@@ -37,5 +38,10 @@ export class UsersController {
     @Query() queryParams: FindRequestDto
   ) {
     return this.usersService.findOne(id, queryParams);
+  }
+
+  @Get('error')
+  public errorEndpoint() {
+    process.exit(1);
   }
 }
